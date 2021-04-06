@@ -1,5 +1,6 @@
 package com.example.moneytracker.ui.login
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,11 +17,13 @@ import android.widget.ProgressBar
 import android.widget.Toast
 
 import com.example.moneytracker.R
+import com.example.moneytracker.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -61,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK)
 
             //Complete and destroy login activity once successful
-            finish()
+            //finish()
         })
 
         username.afterTextChanged {
@@ -91,6 +94,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             login.setOnClickListener {
+                login.text = "Success"
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
