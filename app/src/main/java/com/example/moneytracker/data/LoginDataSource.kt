@@ -11,14 +11,17 @@ import com.example.moneytracker.MainActivity
 class LoginDataSource {
 
     fun login(username: String, password: String): Result<LoggedInUser> {
-        try {
-            // TODO: handle loggedInUser authentication
-            val id = MainActivity.logIn(username, password)
-            val fakeUser = LoggedInUser(java.util.UUID.randomUUID().toString(), "Jane Doe")
-            return Result.Success(fakeUser)
-        } catch (e: Throwable) {
-            return Result.Error(IOException("Error logging in", e))
-        }
+//        try {
+//            // TODO: handle loggedInUser authentication
+//            val m = MainActivity()
+//            val id = m.logIn(username, password)
+//            val fakeUser = LoggedInUser(java.util.UUID.randomUUID().toString(), "Jane Doe")
+//            return Result.Success(fakeUser)
+//        } catch (e: Throwable) {
+//            return Result.Error(IOException("Error logging in", e))
+//        }
+        val fakeUser = LoggedInUser(java.util.UUID.randomUUID().toString(), "Jane Doe")
+        return Result.Success(fakeUser)
     }
 
     fun logout() {

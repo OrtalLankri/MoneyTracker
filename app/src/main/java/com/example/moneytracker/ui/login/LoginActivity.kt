@@ -2,6 +2,7 @@ package com.example.moneytracker.ui.login
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -15,6 +16,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import com.example.moneytracker.MainActivity
 
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.ActivityLoginBinding
@@ -97,6 +99,8 @@ class LoginActivity : AppCompatActivity() {
                 login.text = "Success"
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString())
+                val i = Intent(this@LoginActivity, MainActivity::class.java)
+                startActivity(i)
             }
         }
     }

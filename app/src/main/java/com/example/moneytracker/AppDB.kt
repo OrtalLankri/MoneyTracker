@@ -1,5 +1,4 @@
 package com.example.moneytracker
-import MainActivity2
 import androidx.room.*
 
 @Database (entities = [(UserEntity::class)],version = 1,exportSchema = false)

@@ -1,3 +1,5 @@
+package com.example.moneytracker
+
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moneytracker.AppDB
 
@@ -38,13 +40,13 @@ import com.example.moneytracker.AppDB
 //var isLocal= false
 //
 //
-class MainActivity2 : AppCompatActivity() {
-    public fun logIn(username: String, password: String):Int{
-        val db: AppDB = AppDB.getInstance(this)
-        val id = db.userDAO().getId(username, password)
-        return id
-    }
-}
+//class MainActivity2 : AppCompatActivity() {
+//    public fun logIn(username: String, password: String):Int{
+//        val db: AppDB = AppDB.getInstance(this)
+//        val id = db.userDAO().getId(username, password)
+//        return id
+//    }
+//}
 //    companion object {
 //        lateinit var bitmap: Bitmap
 //    }
