@@ -19,7 +19,6 @@ import android.widget.Toast
 import com.example.moneytracker.MainActivity
 
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
