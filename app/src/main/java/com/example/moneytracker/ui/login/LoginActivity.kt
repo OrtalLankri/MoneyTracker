@@ -19,6 +19,7 @@ import android.widget.Toast
 import com.example.moneytracker.MainActivity
 
 import com.example.moneytracker.R
+import com.example.moneytracker.SigninActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -32,7 +33,8 @@ class LoginActivity : AppCompatActivity() {
 
         val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
-        val login = findViewById<Button>(R.id.login)
+        val login = findViewById<Button>(R.id.signin)
+        val register = findViewById<Button>(R.id.register)
         val loading = findViewById<ProgressBar>(R.id.loading)
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
@@ -65,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK)
 
             //Complete and destroy login activity once successful
-            //finish()
+            finish()
         })
 
         username.afterTextChanged {
@@ -99,6 +101,11 @@ class LoginActivity : AppCompatActivity() {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString())
                 val i = Intent(this@LoginActivity, MainActivity::class.java)
+                startActivity(i)
+            }
+
+            register.setOnClickListener {
+                val i = Intent(this@LoginActivity, SigninActivity::class.java)
                 startActivity(i)
             }
         }
