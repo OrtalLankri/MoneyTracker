@@ -2,13 +2,19 @@ package com.example.moneytracker
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.nfc.Tag
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +37,43 @@ class MainActivity : AppCompatActivity() {
         }
 
         //updateProgressBar()
+        //FirebaseApp.initializeApp();
+        val db = FirebaseFirestore.getInstance().document("sampleData/try")
+        // Create a new user with a first and last name
+        val user = mapOf(
+            "first" to "Adi",
+            "last" to "Lovelace",
+            "born" to 1815
+        )
+        db.set(user).addOnSuccessListener { _ ->
+            Log.d("TAG", "DocumentSnapshot added with ID")
+        }
+            .addOnFailureListener { e ->
+                Log.w("TAG", "Error adding document", e)
+            }
+
+        db.get().addOnSuccessListener { documentReference ->
+            Log.d("TAG", "DocumentSnapshot recieved")
+            val s = documentReference.getString("first").toString()
+            Log.d("TAG", s)
+        }
+            .addOnFailureListener { e ->
+                Log.w("TAG", "Error getting document", e)
+            }
+/*
+        // Add a new document with a generated ID
+        db.collection("users")
+            .add(user)
+            .addOnSuccessListener { documentReference ->
+                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w("TAG", "Error adding document", e)
+            }
+//        val c = db.collection("users").get()
+//        val b = c
+*/
+
     }
 
     fun logIn(username: String, password: String): Int {
