@@ -10,6 +10,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -20,6 +21,7 @@ import com.example.moneytracker.MainActivity
 
 import com.example.moneytracker.R
 import com.example.moneytracker.SigninActivity
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
 
@@ -59,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
 
             loading.visibility = View.GONE
             if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
+                //showLoginFailed(loginResult.error)
             }
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
@@ -97,11 +99,29 @@ class LoginActivity : AppCompatActivity() {
             }
 
             login.setOnClickListener {
-                login.text = "Success"
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
-                val i = Intent(this@LoginActivity, MainActivity::class.java)
-                startActivity(i)
+                //loginViewModel.login(username.text.toString(), password.text.toString())
+                val db_users = FirebaseFirestore.getInstance().collection("Users")
+                val db = FirebaseFirestore.getInstance()
+                db.collection("Users")
+                        .whereEqualTo("email", username.text.toString())
+                        .whereEqualTo("password", password.text.toString()).get()
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                Log.d("TAG", "successful")
+                                val res = it.result!!
+                                if(res.isEmpty) {
+                                    Log.d("TAG", "Empty")
+                                    loading.visibility = View.INVISIBLE
+                                    showLoginFailed("Login Faild, Please try again".toString())
+                                }
+                                else{
+                                    login.text = "Success"
+                                    val i = Intent(this@LoginActivity, MainActivity::class.java)
+                                    startActivity(i)
+                                }
+                            }
+                        }
             }
 
             register.setOnClickListener {
@@ -122,7 +142,7 @@ class LoginActivity : AppCompatActivity() {
         ).show()
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
+    private fun showLoginFailed(errorString: String) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 }
