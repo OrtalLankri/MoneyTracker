@@ -101,23 +101,23 @@ class LoginActivity : AppCompatActivity() {
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 //loginViewModel.login(username.text.toString(), password.text.toString())
-                val db_users = FirebaseFirestore.getInstance().collection("Users")
                 val db = FirebaseFirestore.getInstance()
                 db.collection("Users")
                         .whereEqualTo("email", username.text.toString())
-                        .whereEqualTo("password", password.text.toString()).get()
+                        .whereEqualTo("password", password.text.toString().hashCode().toString()).get()
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
                                 Log.d("TAG", "successful")
-                                val res = it.result!!
-                                if(res.isEmpty) {
+                                val result = it.result!!
+                                if(result.isEmpty) {
                                     Log.d("TAG", "Empty")
                                     loading.visibility = View.INVISIBLE
-                                    showLoginFailed("Login Faild, Please try again".toString())
+                                    showLoginFailed("Login Failed, Please try again".toString())
                                 }
                                 else{
                                     login.text = "Success"
                                     val i = Intent(this@LoginActivity, MainActivity::class.java)
+                                    i.putExtra("userID", result.documents[0].id)
                                     startActivity(i)
                                 }
                             }

@@ -2,19 +2,14 @@ package com.example.moneytracker
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +23,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         CoroutineScope(Dispatchers.IO).launch {  }
+
+        val userId = intent.getStringExtra("userID")
 
         val button = findViewById<FloatingActionButton>(R.id.settings)
 
