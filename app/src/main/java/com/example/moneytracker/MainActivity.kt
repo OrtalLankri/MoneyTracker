@@ -38,23 +38,23 @@ class MainActivity : AppCompatActivity() {
 
         //updateProgressBar()
         //FirebaseApp.initializeApp();
-        val db = FirebaseFirestore.getInstance().document("sampleData/try")
-        // Create a new user with a first and last name
-        val user = mapOf(
-            "first" to "Adi",
-            "last" to "Lovelace",
-            "born" to 1815
-        )
-        db.set(user).addOnSuccessListener { _ ->
-            Log.d("TAG", "DocumentSnapshot added with ID")
-        }
-            .addOnFailureListener { e ->
-                Log.w("TAG", "Error adding document", e)
-            }
+        val db = FirebaseFirestore.getInstance().document("users/Qg0HJ4DB3v79v6WO4KxK")
+//        // Create a new user with a first and last name
+//        val user = mapOf(
+//            "first" to "Adi",
+//            "last" to "Lovelace",
+//            "born" to 1815
+//        )
+//        db.set(user).addOnSuccessListener { _ ->
+//            Log.d("TAG", "DocumentSnapshot added with ID")
+//        }
+//            .addOnFailureListener { e ->
+//                Log.w("TAG", "Error adding document", e)
+//            }
 
         db.get().addOnSuccessListener { documentReference ->
             Log.d("TAG", "DocumentSnapshot recieved")
-            val s = documentReference.getString("first").toString()
+            val s = documentReference.getString("expensses").toString()
             Log.d("TAG", s)
         }
             .addOnFailureListener { e ->
