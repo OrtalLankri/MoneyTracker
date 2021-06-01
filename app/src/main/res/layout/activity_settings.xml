@@ -75,11 +75,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginBottom="24dp"
         android:text="Monthly budget:"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cat5" />
+        app:layout_constraintBottom_toTopOf="@+id/save"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/cat1"
@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Car"
+        android:text="Groceries"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/cat1" />
 
@@ -118,7 +118,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Food"
+        android:text="Car"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/cat3" />
 
@@ -128,9 +128,19 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Fun"
+        android:text="Health"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/cat4" />
+
+    <EditText
+        android:id="@+id/cat6"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Fun"
+        app:layout_constraintStart_toStartOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/cat5" />
 
     <Button
         android:id="@+id/save"
@@ -196,6 +206,26 @@
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="@+id/cat5"
         app:layout_constraintStart_toEndOf="@+id/cat5" />
+
+    <EditText
+        android:id="@+id/cat5_b2"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/cat6"
+        app:layout_constraintStart_toEndOf="@+id/cat6" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Set categories name as default for futere months "
+        app:layout_constraintStart_toStartOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/cat6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

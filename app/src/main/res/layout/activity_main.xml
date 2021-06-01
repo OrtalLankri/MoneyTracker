@@ -16,75 +16,85 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="108dp"
-        android:layout_height="96dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="287dp"
-        tools:layout_editor_absoluteY="447dp"
-        tools:srcCompat="@tools:sample/avatars" />
+    <Button
+        android:id="@+id/c6"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        android:text="Fun"
+        android:textColor="#000000"
+        app:backgroundTint="#FFE57F"
+        app:layout_constraintEnd_toEndOf="@+id/c3"
+        app:layout_constraintStart_toStartOf="@+id/c3"
+        app:layout_constraintTop_toBottomOf="@+id/c3" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="108dp"
-        android:layout_height="96dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="287dp"
-        tools:layout_editor_absoluteY="336dp"
-        tools:srcCompat="@tools:sample/avatars" />
+    <Button
+        android:id="@+id/c2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:text="Groceries"
+        android:textColor="#000000"
+        app:backgroundTint="#F4B5FF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/c3"
+        app:layout_constraintStart_toEndOf="@+id/c1"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="108dp"
-        android:layout_height="96dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="159dp"
-        tools:layout_editor_absoluteY="336dp"
-        tools:srcCompat="@tools:sample/avatars" />
+    <Button
+        android:id="@+id/c4"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        android:text="Car"
+        android:textColor="#000000"
+        app:backgroundTint="#B9F6CA"
+        app:layout_constraintEnd_toEndOf="@+id/c1"
+        app:layout_constraintStart_toStartOf="@+id/c1"
+        app:layout_constraintTop_toBottomOf="@+id/c1" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="108dp"
-        android:layout_height="96dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="32dp"
-        tools:layout_editor_absoluteY="447dp"
-        tools:srcCompat="@tools:sample/avatars" />
+    <Button
+        android:id="@+id/c3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="8dp"
+        android:text="Clothes"
+        android:textColor="#000000"
+        app:backgroundTint="#A4E3FF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="108dp"
-        android:layout_height="96dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="287dp"
-        tools:layout_editor_absoluteY="336dp"
-        tools:srcCompat="@tools:sample/avatars" />
+    <Button
+        android:id="@+id/c1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Home"
+        android:textColor="#000000"
+        app:backgroundTint="#FBC1D5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="108dp"
-        android:layout_height="96dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="32dp"
-        tools:layout_editor_absoluteY="336dp"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="108dp"
-        android:layout_height="96dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="159dp"
-        tools:layout_editor_absoluteY="447dp"
-        tools:srcCompat="@tools:sample/avatars" />
+    <Button
+        android:id="@+id/c5"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        android:text="Health"
+        android:textColor="#000000"
+        app:backgroundTint="#F6FF97"
+        app:layout_constraintEnd_toEndOf="@+id/c2"
+        app:layout_constraintStart_toStartOf="@+id/c2"
+        app:layout_constraintTop_toBottomOf="@+id/c2" />
 
     <TextView
         android:id="@+id/month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="January"
+        android:text="Loading..."
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,22 +108,37 @@
         android:layout_marginTop="28dp"
         android:indeterminateOnly="false"
         android:progressDrawable="@drawable/pie"
-        tools:progress="60"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/month" />
+        app:layout_constraintTop_toBottomOf="@+id/month"
+        tools:progress="60" />
 
     <TextView
         android:id="@+id/amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="345$"
-        android:textSize="18sp"
+        android:text="0$"
+        android:textColor="#E53935"
+        android:textSize="24sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/progressBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
         app:layout_constraintTop_toTopOf="@+id/progressBar" />
+
+    <TextView
+        android:id="@+id/budget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="0$"
+        android:textColor="#7CB342"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
+        app:layout_constraintTop_toBottomOf="@+id/amount" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/settings"
@@ -126,5 +151,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_preferences" />
+
+    <TextView
+        android:id="@+id/setBudget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SET A BUDGET"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
+        app:layout_constraintTop_toTopOf="@+id/progressBar" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,10 +13,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import com.example.moneytracker.MainActivity
 
 import com.example.moneytracker.R
@@ -36,8 +33,9 @@ class LoginActivity : AppCompatActivity() {
         val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
         val login = findViewById<Button>(R.id.signin)
-        val register = findViewById<Button>(R.id.register)
+        val register = findViewById<TextView>(R.id.register)
         val loading = findViewById<ProgressBar>(R.id.loading)
+        val confirm = findViewById<TextView>(R.id.confirmation)
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
                 .get(LoginViewModel::class.java)
@@ -73,6 +71,7 @@ class LoginActivity : AppCompatActivity() {
         })
 
         username.afterTextChanged {
+            confirm.visibility = View.INVISIBLE
             loginViewModel.loginDataChanged(
                     username.text.toString(),
                     password.text.toString()
@@ -81,6 +80,7 @@ class LoginActivity : AppCompatActivity() {
 
         password.apply {
             afterTextChanged {
+                confirm.visibility = View.INVISIBLE
                 loginViewModel.loginDataChanged(
                         username.text.toString(),
                         password.text.toString()
@@ -104,7 +104,8 @@ class LoginActivity : AppCompatActivity() {
                 val db = FirebaseFirestore.getInstance()
                 db.collection("Users")
                         .whereEqualTo("email", username.text.toString())
-                        .whereEqualTo("password", password.text.toString().hashCode().toString()).get()
+                        .whereEqualTo("password", password.text.toString().hashCode().toString())
+                        .get()
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
                                 Log.d("TAG", "successful")
@@ -112,7 +113,8 @@ class LoginActivity : AppCompatActivity() {
                                 if(result.isEmpty) {
                                     Log.d("TAG", "Empty")
                                     loading.visibility = View.INVISIBLE
-                                    showLoginFailed("Login Failed, Please try again".toString())
+//                                    showLoginFailed("Login Failed, Please try again".toString())
+                                    confirm.visibility = View.VISIBLE
                                 }
                                 else{
                                     login.text = "Success"
