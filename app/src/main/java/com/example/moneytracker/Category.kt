@@ -21,10 +21,9 @@ import java.util.*
 class Category: AppCompatActivity(){
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("TAG", "create ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_category)
         CoroutineScope(Dispatchers.IO).launch {  }
 
         val userId = intent.getStringExtra("userID").toString()
@@ -33,12 +32,11 @@ class Category: AppCompatActivity(){
         val catName = intent.getStringExtra("name").toString()
         val catNum = intent.getStringExtra("catNum").toString()
         val addButton = findViewById<Button>(R.id.add)
-        val Category = findViewById<TextView>(R.id.Category)
+        val categoryTitle = findViewById<TextView>(R.id.Category)
         val setBudget = findViewById<TextView>(R.id.setBudget)
         val amount = findViewById<TextView>(R.id.amount)
         val budget = findViewById<TextView>(R.id.budget)
         val expenses = ArrayList<String>()
-        Log.d("TAG", "add listener before ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 
         addButton.setOnClickListener {
@@ -50,18 +48,10 @@ class Category: AppCompatActivity(){
             startActivity(i)
         }
 
-        Log.d("TAG", "add listener ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
         fun setInfo(ref: DocumentSnapshot){
             val data = ref.data!!
-            // set month name
-            Category.text = catName
-            // set categories names
-            val s = data["categories"].toString().removePrefix("{").removeSuffix("}")
-            val categories = s.split(", ").associate {
-                val (left, right) = it.split("=")
-                left to right.toString()
-            }
+            // set category name
+            categoryTitle.text = data["name"].toString()
             // set budget
             if (data["budget"].toString() != "0") {
                 setBudget.visibility = View.GONE
@@ -72,9 +62,9 @@ class Category: AppCompatActivity(){
             updateProgressBar(data["amount"].toString().toDouble(), data["budget"].toString().toDouble())
         }
 
-        fun createNewCategory(catBudget: String) {
+        fun createNewCategory(catBudget: String, name: String) {
             val category = hashMapOf(
-                    "name" to Category,
+                    "name" to name,
                     "budget" to catBudget,
                     "amount" to 0,
                     "expenses" to expenses
@@ -94,8 +84,15 @@ class Category: AppCompatActivity(){
                 if (it.isSuccessful) {
                     val documentReference = it.result!!
                     val budget = documentReference.getField<Object>("categoriesBudget")!!
+                    val cats = documentReference.getField<Object>("categories")!!
+                    var s = cats.toString().removePrefix("{").removeSuffix("}")
+                    val nameMap = s.split(", ").associate {
+                        val (left, right) = it.split("=")
+                        left to right.toString()
+                    }
+                    val name = nameMap[catNum].toString()
                     if (budget.toString() == "0") {
-                        createNewCategory("0")
+                        createNewCategory("0", name)
                     }
                     else {
                         val s = budget.toString().removePrefix("{").removeSuffix("}")
@@ -103,11 +100,11 @@ class Category: AppCompatActivity(){
                             val (left, right) = it.split("=")
                             left to right.toString()
                         }
-                        createNewCategory(budgets[catNum].toString())
+                        createNewCategory(budgets[catNum].toString(), name)
                     }
                 }
             }
-            createNewCategory("0")
+            createNewCategory("0", catName)
         }
 
         fun getDoc() {
@@ -133,6 +130,13 @@ class Category: AppCompatActivity(){
                     }
         }
         getDoc()
+
+        setBudget.setOnClickListener {
+            val i = Intent(this@Category, SettingsActivity::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", month)
+            startActivity(i)
+        }
 
     }
     fun updateProgressBar(amount: Double, budget:Double) {

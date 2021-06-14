@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity() {
 
         val currentDate = SimpleDateFormat("MMyy").format(Date())
         val monthIndex = currentDate.substring(0, 2).toInt()
-        Log.d("TAG", "Month~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         fun setInfo(ref: DocumentSnapshot){
             val data = ref.data!!
@@ -78,8 +77,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         fun createNewMonth(categories: Object) {
-            Log.d("TAG", "create new~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
             val name = Months.values()[monthIndex-1].name
             val month = hashMapOf(
                     "name" to name,
@@ -95,17 +92,11 @@ class MainActivity : AppCompatActivity() {
                     .addOnFailureListener { e ->
                         Log.w("TAG", "Error adding month document", e)
                     }
-            Log.d("TAG", "create new 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
         }
 
         fun setDefaultInfo() {
-            Log.d("TAG", "set default~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
             userRef.get().addOnCompleteListener {
                 if (it.isSuccessful) {
-                    Log.d("TAG", "is successful ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
                     val documentReference = it.result!!
                     val categories = documentReference.getField<Object>("defaultCategories")!!
                     createNewMonth(categories)
@@ -114,8 +105,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         fun getDoc() {
-            Log.d("TAG", "get doc~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
             // check if the current month has data already
             userRef.collection("Months").document(currentDate)
                     .get()
@@ -140,14 +129,14 @@ class MainActivity : AppCompatActivity() {
         settings.setOnClickListener {
             val i = Intent(this@MainActivity, SettingsActivity::class.java)
             i.putExtra("userID", userId)
-            i.putExtra("Date", currentDate)
+            i.putExtra("month", currentDate)
             startActivity(i)
         }
         c1.setOnClickListener {
             val i = Intent(this@MainActivity, Category::class.java)
             i.putExtra("userID", userId)
             i.putExtra("month", currentDate)
-            i.putExtra("name", c1.text)
+            i.putExtra("name", c1.text.toString())
             i.putExtra("catNum", "c1")
             startActivity(i)
         }
@@ -155,7 +144,7 @@ class MainActivity : AppCompatActivity() {
             val i = Intent(this@MainActivity, Category::class.java)
             i.putExtra("userID", userId)
             i.putExtra("month", currentDate)
-            i.putExtra("name", c2.text)
+            i.putExtra("name", c2.text.toString())
             i.putExtra("catNum", "c2")
             startActivity(i)
         }
@@ -163,7 +152,7 @@ class MainActivity : AppCompatActivity() {
             val i = Intent(this@MainActivity, Category::class.java)
             i.putExtra("userID", userId)
             i.putExtra("month", currentDate)
-            i.putExtra("name", c3.text)
+            i.putExtra("name", c3.text.toString())
             i.putExtra("catNum", "c3")
             startActivity(i)
         }
@@ -171,7 +160,7 @@ class MainActivity : AppCompatActivity() {
             val i = Intent(this@MainActivity, Category::class.java)
             i.putExtra("userID", userId)
             i.putExtra("month", currentDate)
-            i.putExtra("name", c4.text)
+            i.putExtra("name", c4.text.toString())
             i.putExtra("catNum", "c4")
             startActivity(i)
         }
@@ -179,7 +168,7 @@ class MainActivity : AppCompatActivity() {
             val i = Intent(this@MainActivity, Category::class.java)
             i.putExtra("userID", userId)
             i.putExtra("month", currentDate)
-            i.putExtra("name", c5.text)
+            i.putExtra("name", c5.text.toString())
             i.putExtra("catNum", "c5")
             startActivity(i)
         }
@@ -187,8 +176,15 @@ class MainActivity : AppCompatActivity() {
             val i = Intent(this@MainActivity, Category::class.java)
             i.putExtra("userID", userId)
             i.putExtra("month", currentDate)
-            i.putExtra("name", c6.text)
+            i.putExtra("name", c6.text.toString())
             i.putExtra("catNum", "c6")
+            startActivity(i)
+        }
+
+        setBudget.setOnClickListener {
+            val i = Intent(this@MainActivity, SettingsActivity::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", currentDate)
             startActivity(i)
         }
         //updateProgressBar()

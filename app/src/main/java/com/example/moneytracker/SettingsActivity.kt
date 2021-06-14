@@ -54,7 +54,43 @@ class SettingsActivity : AppCompatActivity() {
         var nameChanged = false
         var budgetChanged = false
 
+        // set data
+        monthRef.get().addOnCompleteListener {
+            if (it.isSuccessful) {
+                val documentReference = it.result!!
+                // categories names
+                val c = documentReference.getField<Object>("categories")!!
+                var cString = c.toString().removePrefix("{").removeSuffix("}")
+                val cMap = cString.split(", ").associate {
+                    val (left, right) = it.split("=")
+                    left to right.toString()
+                }
+                c1.setText(cMap["c1"])
+                c2.setText(cMap["c2"])
+                c3.setText(cMap["c3"])
+                c4.setText(cMap["c4"])
+                c5.setText(cMap["c5"])
+                c6.setText(cMap["c6"])
+                // budgets
+                val b = documentReference.getField<Object>("categoriesBudget")!!
+                if (budget.toString() != "0") {
+                    val bString = b.toString().removePrefix("{").removeSuffix("}")
+                    val bMap = bString.split(", ").associate {
+                        val (left, right) = it.split("=")
+                        left to right.toString()
+                    }
+                    c1_b.setText(bMap["c1"])
+                    c2_b.setText(bMap["c2"])
+                    c3_b.setText(bMap["c3"])
+                    c4_b.setText(bMap["c4"])
+                    c5_b.setText(bMap["c5"])
+                    c6_b.setText(bMap["c6"])
+                }
+            }
+        }
+
         save.setOnClickListener {
+            // new Names
             if (nameChanged) {
                 val newNames = hashMapOf(
                         "c1" to c1.text.toString(),
@@ -64,15 +100,27 @@ class SettingsActivity : AppCompatActivity() {
                         "c5" to c5.text.toString(),
                         "c6" to c6.text.toString()
                 )
+                // update in month document
                 monthRef.update("categories", newNames)
                         .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
                         .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+                // update in user document
                 if (changeDefault.isActivated) {
                     userRef.update("defaultCategories", newNames)
                             .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
                             .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
                 }
+                // update in category document
+                for (i in 1..6) {
+                    val cat = "c$i"
+                    monthRef.collection("Categories").document(cat)
+                            .update("name", newNames[cat])
+                            .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
+                            .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+                }
+
             }
+            // new budgets
             if (budgetChanged) {
                 val newBudget = hashMapOf(
                         "c1" to c1_b.text.toString(),
@@ -82,26 +130,37 @@ class SettingsActivity : AppCompatActivity() {
                         "c5" to c5_b.text.toString(),
                         "c6" to c6_b.text.toString()
                 )
-                monthRef.update("categories", newBudget)
+                // update in month document
+                monthRef.update("categoriesBudget", newBudget)
                         .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
                         .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+                // update in category document
+                for (i in 1..6) {
+                    val cat = "c$i"
+                    monthRef.collection("Categories").document(cat)
+                            .update("budget", newBudget[cat])
+                            .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
+                            .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+                }
             }
+            // update budget in month document
             monthRef.update("budget", budget.text.toString())
                     .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
                     .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+            // go back to main page
             val i = Intent(this@SettingsActivity, MainActivity::class.java)
             i.putExtra("userID", userId)
             startActivity(i)
         }
 
         fun checkBudget() {
-            val b = budget.text.toString().toDouble()
             var cat = c1_b.text.toString().toDouble() +
                     c2_b.text.toString().toDouble() +
                     c3_b.text.toString().toDouble() +
                     c4_b.text.toString().toDouble() +
                     c5_b.text.toString().toDouble() +
                     c6_b.text.toString().toDouble()
+            val b = budget.text.toString().toDouble()
             if (b < cat) {
                 save.isEnabled = false
                 confirm.visibility = View.VISIBLE
@@ -114,7 +173,14 @@ class SettingsActivity : AppCompatActivity() {
 
         fun budgetChanged() {
             budgetChanged = true
-            checkBudget()
+            var cat = c1_b.text.toString().toDouble() +
+                    c2_b.text.toString().toDouble() +
+                    c3_b.text.toString().toDouble() +
+                    c4_b.text.toString().toDouble() +
+                    c5_b.text.toString().toDouble() +
+                    c6_b.text.toString().toDouble()
+            val b = budget.text.toString().toDouble() + cat
+            budget.setText(b.toString())
         }
 
         budget.afterTextChanged {
