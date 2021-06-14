@@ -37,8 +37,7 @@
         android:textColor="#000000"
         app:backgroundTint="#F4B5FF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/c3"
-        app:layout_constraintStart_toEndOf="@+id/c1"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     <Button

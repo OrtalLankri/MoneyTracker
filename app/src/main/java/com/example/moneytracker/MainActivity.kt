@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +16,7 @@ import com.google.firebase.firestore.ktx.getField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.reflect.Array.get
 import java.text.SimpleDateFormat
-import java.time.temporal.TemporalAmount
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -52,6 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         val currentDate = SimpleDateFormat("MMyy").format(Date())
         val monthIndex = currentDate.substring(0, 2).toInt()
+        Log.d("TAG", "Month~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         settings.setOnClickListener {
             val i = Intent(this@MainActivity, SettingsActivity::class.java)
@@ -64,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             // set month name
             month.text = data["name"].toString()
             // set categories names
-            val categories = ref.getField<Map<String, String>>("categories")!!
+            val categories = ref.getField<HashMap<String, String>>("categories")!!
             c1.text = categories["c1"]
             c2.text = categories["c2"]
             c3.text = categories["c3"]
@@ -81,7 +79,9 @@ class MainActivity : AppCompatActivity() {
             updateProgressBar(data["amount"].toString().toDouble(), data["budget"].toString().toDouble())
         }
 
-        fun createNewMonth(categories: Map<String, String>?) {
+        fun createNewMonth(categories: Object) {
+            Log.d("TAG", "create new~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
             val name = Months.values()[monthIndex-1].name
             val month = hashMapOf(
                     "name" to name,
@@ -96,19 +96,27 @@ class MainActivity : AppCompatActivity() {
                     .addOnFailureListener { e ->
                         Log.w("TAG", "Error adding month document", e)
                     }
+            Log.d("TAG", "create new 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
         }
 
         fun setDefaultInfo() {
+            Log.d("TAG", "set default~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
             userRef.get().addOnCompleteListener {
                 if (it.isSuccessful) {
+                    Log.d("TAG", "is successful ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
                     val documentReference = it.result!!
-                    val categories = documentReference.getField<Map<String, String>>("defaultCategories")
+                    val categories = documentReference.getField<Object>("defaultCategories")!!
                     createNewMonth(categories)
                 }
             }
         }
 
         fun getDoc() {
+            Log.d("TAG", "get doc~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
             // check if the current month has data already
             userRef.collection("Months").document(currentDate)
                     .get()
