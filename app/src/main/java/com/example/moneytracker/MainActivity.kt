@@ -51,12 +51,6 @@ class MainActivity : AppCompatActivity() {
         val monthIndex = currentDate.substring(0, 2).toInt()
         Log.d("TAG", "Month~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-        settings.setOnClickListener {
-            val i = Intent(this@MainActivity, SettingsActivity::class.java)
-            i.putExtra("Date", currentDate)
-            startActivity(i)
-        }
-
         fun setInfo(ref: DocumentSnapshot){
             val data = ref.data!!
             // set month name
@@ -91,7 +85,8 @@ class MainActivity : AppCompatActivity() {
                     "name" to name,
                     "budget" to 0,
                     "amount" to 0,
-                    "categories" to categories
+                    "categories" to categories,
+                    "categoriesBudget" to 0
             )
             userRef.collection("Months").document(currentDate)
                     .set(month).addOnSuccessListener {
@@ -142,7 +137,60 @@ class MainActivity : AppCompatActivity() {
         }
         getDoc()
 
-
+        settings.setOnClickListener {
+            val i = Intent(this@MainActivity, SettingsActivity::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("Date", currentDate)
+            startActivity(i)
+        }
+        c1.setOnClickListener {
+            val i = Intent(this@MainActivity, Category::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", currentDate)
+            i.putExtra("name", c1.text)
+            i.putExtra("catNum", "c1")
+            startActivity(i)
+        }
+        c2.setOnClickListener {
+            val i = Intent(this@MainActivity, Category::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", currentDate)
+            i.putExtra("name", c2.text)
+            i.putExtra("catNum", "c2")
+            startActivity(i)
+        }
+        c3.setOnClickListener {
+            val i = Intent(this@MainActivity, Category::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", currentDate)
+            i.putExtra("name", c3.text)
+            i.putExtra("catNum", "c3")
+            startActivity(i)
+        }
+        c4.setOnClickListener {
+            val i = Intent(this@MainActivity, Category::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", currentDate)
+            i.putExtra("name", c4.text)
+            i.putExtra("catNum", "c4")
+            startActivity(i)
+        }
+        c5.setOnClickListener {
+            val i = Intent(this@MainActivity, Category::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", currentDate)
+            i.putExtra("name", c5.text)
+            i.putExtra("catNum", "c5")
+            startActivity(i)
+        }
+        c6.setOnClickListener {
+            val i = Intent(this@MainActivity, Category::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", currentDate)
+            i.putExtra("name", c6.text)
+            i.putExtra("catNum", "c6")
+            startActivity(i)
+        }
         //updateProgressBar()
         //FirebaseApp.initializeApp();
 //        // Create a new user with a first and last name

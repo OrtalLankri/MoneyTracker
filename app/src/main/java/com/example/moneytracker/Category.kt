@@ -21,6 +21,8 @@ import java.util.*
 class Category: AppCompatActivity(){
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("TAG", "create ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         CoroutineScope(Dispatchers.IO).launch {  }
@@ -30,15 +32,16 @@ class Category: AppCompatActivity(){
         val monthRef = FirebaseFirestore.getInstance().document("Users/$userId/Months/$month")
         val catName = intent.getStringExtra("name").toString()
         val catNum = intent.getStringExtra("catNum").toString()
-        val add = findViewById<Button>(R.id.add)
+        val addButton = findViewById<Button>(R.id.add)
         val Category = findViewById<TextView>(R.id.Category)
         val setBudget = findViewById<TextView>(R.id.setBudget)
         val amount = findViewById<TextView>(R.id.amount)
         val budget = findViewById<TextView>(R.id.budget)
         val expenses = ArrayList<String>()
+        Log.d("TAG", "add listener before ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 
-        add.setOnClickListener {
+        addButton.setOnClickListener {
             val i = Intent(this@Category, Expense::class.java)
             i.putExtra("userID",userId)
             i.putExtra("Date", month)
@@ -46,6 +49,8 @@ class Category: AppCompatActivity(){
             i.putExtra("catNum", catNum)
             startActivity(i)
         }
+
+        Log.d("TAG", "add listener ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         fun setInfo(ref: DocumentSnapshot){
             val data = ref.data!!
@@ -106,6 +111,8 @@ class Category: AppCompatActivity(){
         }
 
         fun getDoc() {
+            Log.d("TAG", "get doc category ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
             // check if the current category has data already
             monthRef.collection("Categories").document(catNum)
                     .get()

@@ -3,11 +3,9 @@ package com.example.moneytracker.ui.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
 import com.example.moneytracker.data.LoginRepository
 import com.example.moneytracker.data.Result
 import com.example.moneytracker.R
-import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 

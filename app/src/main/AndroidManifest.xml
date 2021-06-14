@@ -23,10 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".SigninActivity" ></activity>
 
         <activity android:name=".Category" ></activity>
+        <activity android:name=".Expense" ></activity>
 
         <activity android:name=".SettingsActivity" ></activity>
     </application>

@@ -118,7 +118,6 @@ class LoginActivity : AppCompatActivity() {
                                 }
                                 else{
                                     login.text = "Success"
-                                    val user = LoggedInUserView(displayName = res.documents[0])
                                     val i = Intent(this@LoginActivity, MainActivity::class.java)
                                     i.putExtra("userID", result.documents[0].id)
                                     startActivity(i)

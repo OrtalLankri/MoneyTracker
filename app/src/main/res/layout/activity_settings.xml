@@ -42,8 +42,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:ems="10"
+        android:text="0"
         android:inputType="numberDecimal"
-        android:text="@={SettingsViewModel.budget}"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintStart_toEndOf="@+id/textView2" />
 
@@ -159,6 +159,7 @@
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
         android:ems="10"
+        android:text="0"
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="@+id/cat1"
         app:layout_constraintStart_toEndOf="@+id/cat1" />
@@ -170,6 +171,7 @@
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
         android:ems="10"
+        android:text="0"
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="@+id/cat2"
         app:layout_constraintStart_toEndOf="@+id/cat2" />
@@ -181,6 +183,7 @@
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
         android:ems="10"
+        android:text="0"
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="@+id/cat3"
         app:layout_constraintStart_toEndOf="@+id/cat3" />
@@ -192,6 +195,7 @@
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
         android:ems="10"
+        android:text="0"
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="@+id/cat4"
         app:layout_constraintStart_toEndOf="@+id/cat4" />
@@ -203,17 +207,19 @@
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
         android:ems="10"
+        android:text="0"
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="@+id/cat5"
         app:layout_constraintStart_toEndOf="@+id/cat5" />
 
     <EditText
-        android:id="@+id/cat5_b2"
+        android:id="@+id/cat6_b"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
         android:ems="10"
+        android:text="0"
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="@+id/cat6"
         app:layout_constraintStart_toEndOf="@+id/cat6" />
@@ -223,9 +229,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Set categories name as default for futere months "
+        android:text="Set categories name as default for future months "
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/cat6" />
+
+    <TextView
+        android:id="@+id/confirmation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="budget cannot be less than categories budgets"
+        android:textColor="#F44336"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/budget" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
