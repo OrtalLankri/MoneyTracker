@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -28,31 +29,34 @@ class Category: AppCompatActivity(){
         val month = intent.getStringExtra("month").toString()
         val monthRef = FirebaseFirestore.getInstance().document("Users/$userId/Months/$month")
         val catName = intent.getStringExtra("name").toString()
+        val catNum = intent.getStringExtra("catNum").toString()
         val add = findViewById<Button>(R.id.add)
+        val Category = findViewById<TextView>(R.id.Category)
+        val setBudget = findViewById<TextView>(R.id.setBudget)
+        val amount = findViewById<TextView>(R.id.amount)
+        val budget = findViewById<TextView>(R.id.budget)
+        val expenses = ArrayList<String>()
 
 
         add.setOnClickListener {
-//            val i = Intent(this@MainActivity, SettingsActivity::class.java)
-//            i.putExtra("Date", currentDate)
-//            startActivity(i)
+            val i = Intent(this@Category, Expense::class.java)
+            i.putExtra("userID",userId)
+            i.putExtra("Date", month)
+            i.putExtra("category", catName)
+            i.putExtra("catNum", catNum)
+            startActivity(i)
         }
 
         fun setInfo(ref: DocumentSnapshot){
             val data = ref.data!!
             // set month name
-            month.text = data["name"].toString()
+            Category.text = catName
             // set categories names
             val s = data["categories"].toString().removePrefix("{").removeSuffix("}")
             val categories = s.split(", ").associate {
                 val (left, right) = it.split("=")
                 left to right.toString()
             }
-            c1.text = categories["c1"]
-            c2.text = categories["c2"]
-            c3.text = categories["c3"]
-            c4.text = categories["c4"]
-            c5.text = categories["c5"]
-            c6.text = categories["c6"]
             // set budget
             if (data["budget"].toString() != "0") {
                 setBudget.visibility = View.GONE
@@ -63,46 +67,47 @@ class Category: AppCompatActivity(){
             updateProgressBar(data["amount"].toString().toDouble(), data["budget"].toString().toDouble())
         }
 
-        fun createNewMonth(categories: Object) {
-            Log.d("TAG", "create new~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
-            val name = Months.values()[monthIndex-1].name
-            val month = hashMapOf(
-                    "name" to name,
-                    "budget" to 0,
+        fun createNewCategory(catBudget: String) {
+            val category = hashMapOf(
+                    "name" to Category,
+                    "budget" to catBudget,
                     "amount" to 0,
-                    "categories" to categories
+                    "expenses" to expenses
             )
-            userRef.collection("Months").document(currentDate)
-                    .set(month).addOnSuccessListener {
+            monthRef.collection("Categories").document(catNum)
+                    .set(category).addOnSuccessListener {
                         Log.d("TAG", "Month document added successfully")
                     }
                     .addOnFailureListener { e ->
                         Log.w("TAG", "Error adding month document", e)
                     }
-            Log.d("TAG", "create new 2~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
         }
 
+
         fun setDefaultInfo() {
-            Log.d("TAG", "set default~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
-            userRef.get().addOnCompleteListener {
+            monthRef.get().addOnCompleteListener {
                 if (it.isSuccessful) {
-                    Log.d("TAG", "is successful ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
                     val documentReference = it.result!!
-                    val categories = documentReference.getField<Object>("defaultCategories")!!
-                    createNewMonth(categories)
+                    val budget = documentReference.getField<Object>("categoriesBudget")!!
+                    if (budget.toString() == "0") {
+                        createNewCategory("0")
+                    }
+                    else {
+                        val s = budget.toString().removePrefix("{").removeSuffix("}")
+                        val budgets = s.split(", ").associate {
+                            val (left, right) = it.split("=")
+                            left to right.toString()
+                        }
+                        createNewCategory(budgets[catNum].toString())
+                    }
                 }
             }
+            createNewCategory("0")
         }
 
         fun getDoc() {
-            Log.d("TAG", "get doc~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
             // check if the current category has data already
-            monthRef.collection("Categories").document(catName)
+            monthRef.collection("Categories").document(catNum)
                     .get()
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
@@ -122,32 +127,19 @@ class Category: AppCompatActivity(){
         }
         getDoc()
 
-
-        //updateProgressBar()
-        //FirebaseApp.initializeApp();
-//        // Create a new user with a first and last name
-//        val user = mapOf(
-//            "first" to "Adi",
-//            "last" to "Lovelace",
-//            "born" to 1815
-//        )
-//        db.set(user).addOnSuccessListener { _ ->
-//            Log.d("TAG", "DocumentSnapshot added with ID")
-//        }
-//            .addOnFailureListener { e ->
-//                Log.w("TAG", "Error adding document", e)
-//            }
-//
-//        db.get().addOnSuccessListener { documentReference ->
-//            Log.d("TAG", "DocumentSnapshot recieved")
-//            val s = documentReference.getString("expensses").toString()
-//            Log.d("TAG", s)
-//        }
-//            .addOnFailureListener { e ->
-//                Log.w("TAG", "Error getting document", e)
-//            }
-
-
     }
-
+    fun updateProgressBar(amount: Double, budget:Double) {
+        val pb = findViewById<ProgressBar>(R.id.progressBar)
+        var percent = 0
+        if (budget > 0) {
+            percent = (amount / budget * 100).toInt()
+        }
+        if (percent > 100) {
+            percent = 100
+        }
+        if (percent < 0) {
+            percent = 0
+        }
+        pb.progress = percent
+    }
 }
