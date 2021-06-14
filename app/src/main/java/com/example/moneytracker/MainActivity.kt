@@ -62,7 +62,11 @@ class MainActivity : AppCompatActivity() {
             // set month name
             month.text = data["name"].toString()
             // set categories names
-            val categories = ref.getField<HashMap<String, String>>("categories")!!
+            val s = data["categories"].toString().removePrefix("{").removeSuffix("}")
+            val categories = s.split(", ").associate {
+                val (left, right) = it.split("=")
+                left to right.toString()
+            }
             c1.text = categories["c1"]
             c2.text = categories["c2"]
             c3.text = categories["c3"]
