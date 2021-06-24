@@ -30,13 +30,6 @@ class Expense: AppCompatActivity(){
         setContentView(R.layout.activity_expense)
         CoroutineScope(Dispatchers.IO).launch { }
 
-        val btnDatePicker = Button(this)
-
-        var txtDate: EditText? = null
-        var mYear = 0
-        var mMonth: Int = 0
-        var mDay: Int = 0
-
         val category = intent.getStringExtra("catNum")
         val userId = intent.getStringExtra("userID").toString()
         val month = intent.getStringExtra("month").toString()
@@ -49,7 +42,6 @@ class Expense: AppCompatActivity(){
         val product_name = findViewById<EditText>(R.id.product_name)
         val price = findViewById<EditText>(R.id.price)
         val newExpense = findViewById<TextView>(R.id.title1)
-        txtDate = findViewById<EditText>(R.id.in_date);
         var dataChanged = false
 
 
@@ -72,7 +64,8 @@ class Expense: AppCompatActivity(){
                 val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
                 calendar.time = Date(it)
                 date.text = "${calendar.get(Calendar.DAY_OF_MONTH)}- " +
-                        "${calendar.get(Calendar.MONTH) + 1}-${calendar.get(Calendar.YEAR)}"
+                        "${calendar.get(Calendar.MONTH) + 1}- "+
+                "${calendar.get(Calendar.YEAR)}"
 
             }
 

@@ -70,8 +70,8 @@ class MainActivity : AppCompatActivity() {
                 setBudget.visibility = View.GONE
                 amount.visibility = View.VISIBLE
                 budget.visibility = View.VISIBLE
-                budget.text = data["budget"].toString()
-                amount.text = data["amount"].toString()
+                budget.text = data["budget"].toString()+ "$"
+                amount.text = data["amount"].toString()+ "$"
             }
             // set progress bar
             updateProgressBar(data["amount"].toString().toDouble(), data["budget"].toString().toDouble())
