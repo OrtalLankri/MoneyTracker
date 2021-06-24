@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -36,12 +37,13 @@ class MainActivity : AppCompatActivity() {
         val userRef = FirebaseFirestore.getInstance().collection("Users").document(userId)
         val settings = findViewById<FloatingActionButton>(R.id.settings)
         val month = findViewById<TextView>(R.id.month)
-        val c1 = findViewById<Button>(R.id.c1)
-        val c2 = findViewById<Button>(R.id.c2)
-        val c3 = findViewById<Button>(R.id.c3)
-        val c4 = findViewById<Button>(R.id.c4)
-        val c5 = findViewById<Button>(R.id.c5)
-        val c6 = findViewById<Button>(R.id.c6)
+        val cat = arrayListOf<Button>()
+        cat.add(findViewById<Button>(R.id.c1))
+        cat.add(findViewById<Button>(R.id.c2))
+        cat.add(findViewById<Button>(R.id.c3))
+        cat.add(findViewById<Button>(R.id.c4))
+        cat.add(findViewById<Button>(R.id.c5))
+        cat.add(findViewById<Button>(R.id.c6))
         val setBudget = findViewById<TextView>(R.id.setBudget)
         val amount = findViewById<TextView>(R.id.amount)
         val budget = findViewById<TextView>(R.id.budget)
@@ -60,17 +62,16 @@ class MainActivity : AppCompatActivity() {
                 val (left, right) = it.split("=")
                 left to right.toString()
             }
-            c1.text = categories["c1"]
-            c2.text = categories["c2"]
-            c3.text = categories["c3"]
-            c4.text = categories["c4"]
-            c5.text = categories["c5"]
-            c6.text = categories["c6"]
+            for (i in 1..6) {
+                cat[i-1].text = categories["c$i"]
+            }
             // set budget
             if (data["budget"].toString() != "0") {
                 setBudget.visibility = View.GONE
                 amount.visibility = View.VISIBLE
                 budget.visibility = View.VISIBLE
+                budget.text = data["budget"].toString()
+                amount.text = data["amount"].toString()
             }
             // set progress bar
             updateProgressBar(data["amount"].toString().toDouble(), data["budget"].toString().toDouble())
@@ -132,53 +133,16 @@ class MainActivity : AppCompatActivity() {
             i.putExtra("month", currentDate)
             startActivity(i)
         }
-        c1.setOnClickListener {
-            val i = Intent(this@MainActivity, Category::class.java)
-            i.putExtra("userID", userId)
-            i.putExtra("month", currentDate)
-            i.putExtra("name", c1.text.toString())
-            i.putExtra("catNum", "c1")
-            startActivity(i)
-        }
-        c2.setOnClickListener {
-            val i = Intent(this@MainActivity, Category::class.java)
-            i.putExtra("userID", userId)
-            i.putExtra("month", currentDate)
-            i.putExtra("name", c2.text.toString())
-            i.putExtra("catNum", "c2")
-            startActivity(i)
-        }
-        c3.setOnClickListener {
-            val i = Intent(this@MainActivity, Category::class.java)
-            i.putExtra("userID", userId)
-            i.putExtra("month", currentDate)
-            i.putExtra("name", c3.text.toString())
-            i.putExtra("catNum", "c3")
-            startActivity(i)
-        }
-        c4.setOnClickListener {
-            val i = Intent(this@MainActivity, Category::class.java)
-            i.putExtra("userID", userId)
-            i.putExtra("month", currentDate)
-            i.putExtra("name", c4.text.toString())
-            i.putExtra("catNum", "c4")
-            startActivity(i)
-        }
-        c5.setOnClickListener {
-            val i = Intent(this@MainActivity, Category::class.java)
-            i.putExtra("userID", userId)
-            i.putExtra("month", currentDate)
-            i.putExtra("name", c5.text.toString())
-            i.putExtra("catNum", "c5")
-            startActivity(i)
-        }
-        c6.setOnClickListener {
-            val i = Intent(this@MainActivity, Category::class.java)
-            i.putExtra("userID", userId)
-            i.putExtra("month", currentDate)
-            i.putExtra("name", c6.text.toString())
-            i.putExtra("catNum", "c6")
-            startActivity(i)
+
+        for (j in 1..6) {
+            cat[j-1].setOnClickListener {
+                val i = Intent(this@MainActivity, Category::class.java)
+                i.putExtra("userID", userId)
+                i.putExtra("month", currentDate)
+                i.putExtra("name", cat[j-1].text.toString())
+                i.putExtra("catNum", "c$j")
+                startActivity(i)
+            }
         }
 
         setBudget.setOnClickListener {
