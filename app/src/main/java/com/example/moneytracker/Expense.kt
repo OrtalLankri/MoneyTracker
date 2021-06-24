@@ -15,10 +15,12 @@ import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.getField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.HashMap
 
 class Expense: AppCompatActivity(){
     @SuppressLint("SetTextI18n")
@@ -95,9 +97,48 @@ class Expense: AppCompatActivity(){
                 }
         }
 
+
+        fun updateMap(map: HashMap<String, String>) {
+            Log.d("CCC", "update map")
+
+            catRef.update("expenses", map)
+                .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
+                .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+        }
+
+        fun addExpenseToCategory(string: String, id : String) {
+            Log.d("CCC", "add expense")
+
+            catRef.get().addOnCompleteListener {
+                if (it.isSuccessful) {
+                    val documentReference = it.result!!
+                    val newMap = hashMapOf(
+                        id to string
+                    )
+                    // expenses
+                    val c = documentReference.getField<Object>("expenses")!!
+                    // if the current map is not empty
+                    if (c.toString() != "Map is empty" && c.toString() != "[]") {
+                        Log.d("CCC", "Map is empty")
+                        var cString = c.toString().removePrefix("{").removeSuffix("}")
+                        val map = cString.split(", ").associate {
+                            val (left, right) = it.split("=")
+                            left to right.toString()
+                        }
+                        for ((oldId, oldString) in map) {
+                            newMap.put(oldId, oldString)
+                        }
+                    }
+                    updateMap(newMap)
+                }
+            }
+        }
+
         save.setOnClickListener {
+            save.text = "Saving..."
             // if it's a new expense
             if (expenseId == "null") {
+                Log.d("CCC", "new expense")
                 val expense = hashMapOf(
                     "date" to date.text.toString(),
                     "description" to remark.text.toString(),
@@ -111,15 +152,12 @@ class Expense: AppCompatActivity(){
                             "TAG",
                             "DocumentSnapshot written with ID-------------------------------------: ${documentReference.id}"
                         )
-                        val name = product_name.text.toString()
+                        // add expense to category
+                        val expenseString = expense["title"] + " - " + expense["price"] + "$"
+                        val id = documentReference.id
+                        Log.d("CCC", "before add to cat id: $id")
+                        addExpenseToCategory(expenseString, id)
                         showMessage("Saved Successfully!")
-                        // ADD EXPENSE TO CATEGORY
-                        val i = Intent(this@Expense, Category::class.java)
-                        i.putExtra("userID", userId)
-                        i.putExtra("month", month)
-                        i.putExtra("category", category)
-                        i.putExtra("catNum", intent.getStringExtra("catNum").toString())
-                        startActivity(i)
                     }
                     .addOnFailureListener { e ->
                         Log.w("TAG", "Error adding document", e)
@@ -140,6 +178,12 @@ class Expense: AppCompatActivity(){
                     .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
                     .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
             }
+            val i = Intent(this@Expense, Category::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", month)
+            i.putExtra("name", intent.getStringExtra("category").toString())
+            i.putExtra("catNum", category)
+            startActivity(i)
         }
 
         product_name.afterTextChanged{
@@ -155,6 +199,12 @@ class Expense: AppCompatActivity(){
         }
         date.doAfterTextChanged {
             dataChanged = true
+        }
+        price.afterTextChanged {
+            save.isEnabled = price.text.isNotBlank() && product_name.text.isNotBlank()
+        }
+        product_name.afterTextChanged {
+            save.isEnabled = price.text.isNotBlank() && product_name.text.isNotBlank()
         }
     }
 

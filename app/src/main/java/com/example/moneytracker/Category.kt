@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class Category: AppCompatActivity(){
@@ -40,7 +41,7 @@ class Category: AppCompatActivity(){
         val amount = findViewById<TextView>(R.id.amount)
         val budget = findViewById<TextView>(R.id.budget)
 
-        val expenses = ArrayList<String>()
+        val expenses = HashMap<String, String>()
 
         val layout = findViewById(R.id.layout) as LinearLayout
 //        val btnList: MutableList<Button> = ArrayList()
