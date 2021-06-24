@@ -18,15 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-        val btnList: MutableList<Button> = ArrayList()
-
-        val button = Button(this)
-        button.layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT)
-        val layout = findViewById(R.id.layout) as LinearLayout
-        layout.addView(button)
-        btnList.add(button)
 
 class Category: AppCompatActivity(){
     @SuppressLint("SetTextI18n")
