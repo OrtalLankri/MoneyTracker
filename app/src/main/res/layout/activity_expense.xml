@@ -6,15 +6,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--    <EditText-->
+<!--        android:id="@+id/date"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="128dp"-->
+<!--        android:ems="10"-->
+<!--        android:hint="Date"-->
+<!--        android:inputType="date"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/title1" />-->
+
     <EditText
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
+        android:id="@+id/in_date"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/product_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title1"
+        app:layout_constraintVertical_bias="0.943" />
+
+    <Button
+        android:id="@+id/date"
+        android:layout_width="103dp"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@+id/in_date"
+        android:layout_marginTop="152dp"
+        android:layout_toEndOf="@+id/in_date"
+        android:layout_toRightOf="@+id/in_date"
         android:ems="10"
-        android:hint="Date"
-        android:inputType="date"
+        android:text="SELECT DATE"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title1" />
 

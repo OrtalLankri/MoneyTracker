@@ -18,6 +18,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
+        val btnList: MutableList<Button> = ArrayList()
+
+        val button = Button(this)
+        button.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT)
+        val layout = findViewById(R.id.layout) as LinearLayout
+        layout.addView(button)
+        btnList.add(button)
 
 class Category: AppCompatActivity(){
     @SuppressLint("SetTextI18n")
@@ -32,6 +41,8 @@ class Category: AppCompatActivity(){
         val monthRef = FirebaseFirestore.getInstance().document("Users/$userId/Months/$month")
         val catName = intent.getStringExtra("name").toString()
         val catNum = intent.getStringExtra("catNum").toString()
+        Log.d("TAG","\"Users/$userId/Months/$month/Categories")
+
         val addButton = findViewById<Button>(R.id.add)
         val categoryTitle = findViewById<TextView>(R.id.Category)
         val setBudget = findViewById<TextView>(R.id.setBudget)
