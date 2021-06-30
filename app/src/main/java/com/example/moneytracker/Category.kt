@@ -1,14 +1,14 @@
 package com.example.moneytracker
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
+import android.text.Layout
+import android.text.style.DynamicDrawableSpan.ALIGN_CENTER
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -43,7 +43,8 @@ class Category: AppCompatActivity(){
 
         val expenses = HashMap<String, String>()
 
-        val layout = findViewById(R.id.layout) as LinearLayout
+        val layout = findViewById<LinearLayout>(R.id.layout)
+        val scroll = findViewById<ScrollView>(R.id.scrollView1)
 //        val btnList: MutableList<Button> = ArrayList()
 //        val button = Button(this)
 //        button.layoutParams = LinearLayout.LayoutParams(
@@ -71,10 +72,11 @@ class Category: AppCompatActivity(){
             for ((id, expense) in map) {
                 val button = Button(this)
                 button.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT)
                 layout.addView(button)
                 button.text = expense
+                button.isAllCaps = false
                 button.setOnClickListener {
                     val i = Intent(this@Category, Expense::class.java)
                     i.putExtra("userID", userId)
@@ -105,7 +107,9 @@ class Category: AppCompatActivity(){
                 data["budget"].toString().toDouble()
             )
             // set expenses list
-//            setExpenses(data["expenses"].toString())
+            Log.d("BOTTON", "before")
+            setExpenses(data["expenses"].toString())
+            Log.d("BOTTON", "after")
         }
 
         fun createNewCategory(catBudget: String, name: String) {

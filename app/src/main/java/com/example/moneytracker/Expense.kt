@@ -39,6 +39,7 @@ class Expense: AppCompatActivity(){
         val catRef = FirebaseFirestore.getInstance()
             .document("Users/$userId/Months/$month/Categories/$category")
         val save = findViewById<Button>(R.id.save_button)
+        val delete = findViewById<Button>(R.id.delete)
         val date = findViewById<Button>(R.id.date)
         val remark = findViewById<EditText>(R.id.remark)
         val product_name = findViewById<EditText>(R.id.product_name)
@@ -48,20 +49,15 @@ class Expense: AppCompatActivity(){
 
 
         date.setOnClickListener {
-
             // Create the date picker builder and set the title
             val builder = MaterialDatePicker.Builder.datePicker()
                 .also {
                     title = "Pick Date"
                 }
-
-
             // create the date picker
             val datePicker = builder.build()
-
             // set listener when date is selected
             datePicker.addOnPositiveButtonClickListener {
-
                 // Create calendar object and set the date to be that returned from selection
                 val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
                 calendar.time = Date(it)
@@ -70,10 +66,9 @@ class Expense: AppCompatActivity(){
                 "${calendar.get(Calendar.YEAR)}"
 
             }
-
             datePicker.show(supportFragmentManager, "MyTAG")
-
         }
+
 
         fun setInfo(ref: DocumentSnapshot) {
             val data = ref.data!!
@@ -86,6 +81,7 @@ class Expense: AppCompatActivity(){
         // if expense already exist
         if (expenseId != "null") {
             newExpense.visibility = View.INVISIBLE
+            delete.visibility = View.VISIBLE
             catRef.collection("Expenses").document(expenseId)
                 .get()
                 .addOnCompleteListener {
@@ -108,7 +104,6 @@ class Expense: AppCompatActivity(){
 
         fun addExpenseToCategory(string: String, id : String) {
             Log.d("CCC", "add expense")
-
             catRef.get().addOnCompleteListener {
                 if (it.isSuccessful) {
                     val documentReference = it.result!!
@@ -119,7 +114,6 @@ class Expense: AppCompatActivity(){
                     val c = documentReference.getField<Object>("expenses")!!
                     // if the current map is not empty
                     if (c.toString() != "Map is empty" && c.toString() != "[]") {
-                        Log.d("CCC", "Map is empty")
                         var cString = c.toString().removePrefix("{").removeSuffix("}")
                         val map = cString.split(", ").associate {
                             val (left, right) = it.split("=")
@@ -184,6 +178,49 @@ class Expense: AppCompatActivity(){
             i.putExtra("name", intent.getStringExtra("category").toString())
             i.putExtra("catNum", category)
             startActivity(i)
+        }
+
+        delete.setOnClickListener {
+            // if expense already exist
+            if (expenseId != "null") {
+                delete.text = "deleting..."
+                save.isEnabled = false
+                // delete from expenses
+                catRef.collection("Expenses").document(expenseId)
+                        .delete()
+                        .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully deleted!") }
+                        .addOnFailureListener { e -> Log.w("TAG", "Error deleting document", e) }
+                // delete from category
+                catRef.get().addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        val documentReference = it.result!!
+                        val newMap = HashMap<String, String>()
+                        // expenses
+                        val c = documentReference.getField<Object>("expenses")!!
+                        // if the current map is not empty
+                        if (c.toString() != "Map is empty" && c.toString() != "[]") {
+                            Log.d("CCC", "Map is empty")
+                            var cString = c.toString().removePrefix("{").removeSuffix("}")
+                            val map = cString.split(", ").associate {
+                                val (left, right) = it.split("=")
+                                left to right.toString()
+                            }
+                            for ((oldId, oldString) in map) {
+                                if (oldId != expenseId) {
+                                    newMap.put(oldId, oldString)
+                                }
+                            }
+                        }
+                        updateMap(newMap)
+                    }
+                }
+                val i = Intent(this@Expense, Category::class.java)
+                i.putExtra("userID", userId)
+                i.putExtra("month", month)
+                i.putExtra("name", intent.getStringExtra("category").toString())
+                i.putExtra("catNum", category)
+                startActivity(i)
+            }
         }
 
         product_name.afterTextChanged{

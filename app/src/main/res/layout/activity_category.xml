@@ -36,94 +36,113 @@
 <!--        app:layout_constraintHorizontal_bias="1.0"-->
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toBottomOf="@+id/progressBar">-->
-
+<!--    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_width="match_parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/progressBar">-->
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="8dp">
         <LinearLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-<!--            <TextView-->
-<!--                android:id="@+id/textView5"-->
-<!--                android:layout_width="387dp"-->
-<!--                android:layout_height="20dp"-->
-<!--                android:layout_marginTop="49dp"-->
-<!--                android:layout_marginBottom="197dp"-->
-<!--                android:text="product 1:"-->
-<!--                app:layout_constraintBottom_toTopOf="@+id/scroll"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.135"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            android:layout_height="wrap_content"
+            android:gravity="bottom|center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar">
 
-<!--            <EditText-->
-<!--                android:id="@+id/editTextTextPassword"-->
-<!--                android:layout_width="198dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:ems="10"-->
-<!--                android:inputType="textPassword"-->
-<!--                tools:layout_editor_absoluteY="150dp" />-->
-
-<!--            <EditText-->
-<!--                android:id="@+id/editText"-->
-<!--                android:layout_width="198dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:ems="10"-->
-<!--                android:inputType="textPassword"-->
-<!--                tools:layout_editor_absoluteY="150dp" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/textView9"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="49dp"-->
-<!--                android:layout_marginBottom="197dp"-->
-<!--                android:text="product 1:"-->
-<!--                app:layout_constraintBottom_toTopOf="@+id/scroll"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.135"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/textView8"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="49dp"-->
-<!--                android:layout_marginBottom="197dp"-->
-<!--                android:text="product 1:"-->
-<!--                app:layout_constraintBottom_toTopOf="@+id/scroll"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.135"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/textView7"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="49dp"-->
-<!--                android:layout_marginBottom="197dp"-->
-<!--                android:text="product 1:"-->
-<!--                app:layout_constraintBottom_toTopOf="@+id/scroll"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.135"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/textView6"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="49dp"-->
-<!--                android:layout_marginBottom="197dp"-->
-<!--                android:text="product 1:"-->
-<!--                app:layout_constraintBottom_toTopOf="@+id/scroll"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.135"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
         </LinearLayout>
+    </ScrollView>
+
+
+    <!--    </ScrollView>-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/textView5"-->
+        <!--                android:layout_width="387dp"-->
+        <!--                android:layout_height="20dp"-->
+        <!--                android:layout_marginTop="49dp"-->
+        <!--                android:layout_marginBottom="197dp"-->
+        <!--                android:text="product 1:"-->
+        <!--                app:layout_constraintBottom_toTopOf="@+id/scroll"-->
+        <!--                app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                app:layout_constraintHorizontal_bias="0.135"-->
+        <!--                app:layout_constraintStart_toStartOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--            <EditText-->
+        <!--                android:id="@+id/editTextTextPassword"-->
+        <!--                android:layout_width="198dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:ems="10"-->
+        <!--                android:inputType="textPassword"-->
+        <!--                tools:layout_editor_absoluteY="150dp" />-->
+
+        <!--            <EditText-->
+        <!--                android:id="@+id/editText"-->
+        <!--                android:layout_width="198dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:ems="10"-->
+        <!--                android:inputType="textPassword"-->
+        <!--                tools:layout_editor_absoluteY="150dp" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/textView9"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginTop="49dp"-->
+        <!--                android:layout_marginBottom="197dp"-->
+        <!--                android:text="product 1:"-->
+        <!--                app:layout_constraintBottom_toTopOf="@+id/scroll"-->
+        <!--                app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                app:layout_constraintHorizontal_bias="0.135"-->
+        <!--                app:layout_constraintStart_toStartOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/textView8"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginTop="49dp"-->
+        <!--                android:layout_marginBottom="197dp"-->
+        <!--                android:text="product 1:"-->
+        <!--                app:layout_constraintBottom_toTopOf="@+id/scroll"-->
+        <!--                app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                app:layout_constraintHorizontal_bias="0.135"-->
+        <!--                app:layout_constraintStart_toStartOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/textView7"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginTop="49dp"-->
+        <!--                android:layout_marginBottom="197dp"-->
+        <!--                android:text="product 1:"-->
+        <!--                app:layout_constraintBottom_toTopOf="@+id/scroll"-->
+        <!--                app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                app:layout_constraintHorizontal_bias="0.135"-->
+        <!--                app:layout_constraintStart_toStartOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/textView6"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginTop="49dp"-->
+        <!--                android:layout_marginBottom="197dp"-->
+        <!--                android:text="product 1:"-->
+        <!--                app:layout_constraintBottom_toTopOf="@+id/scroll"-->
+        <!--                app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                app:layout_constraintHorizontal_bias="0.135"-->
+        <!--                app:layout_constraintStart_toStartOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent" />-->
 <!--    </ScrollView>-->
 
     <TextView
