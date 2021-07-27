@@ -1,10 +1,8 @@
 package com.example.moneytracker
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Paint
+import android.graphics.Color
 import android.os.Bundle
-import android.text.Layout
-import android.text.style.DynamicDrawableSpan.ALIGN_CENTER
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +14,6 @@ import com.google.firebase.firestore.ktx.getField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
-import kotlin.collections.HashMap
 
 
 class Category: AppCompatActivity(){
@@ -33,8 +29,19 @@ class Category: AppCompatActivity(){
         val monthRef = FirebaseFirestore.getInstance().document("Users/$userId/Months/$month")
         val catName = intent.getStringExtra("name").toString()
         val catNum = intent.getStringExtra("catNum").toString()
-        Log.d("TAG","\"Users/$userId/Months/$month/Categories")
+        // set background color
+        val colors = hashMapOf<String, String>(
+                "c1" to "#FBC1D5",
+                "c2" to "#F4B5FF",
+                "c3" to "#A4E3FF",
+                "c4" to "#B9F6CA",
+                "c5" to "#F6FF97",
+                "c6" to "#FFE57F"
+        )
+        val root = findViewById<View>(R.id.Category).rootView
+        root.setBackgroundColor(Color.parseColor(colors[catNum]))
 
+        val back = findViewById<Button>(R.id.back)
         val addButton = findViewById<Button>(R.id.add)
         val categoryTitle = findViewById<TextView>(R.id.Category)
         val setBudget = findViewById<TextView>(R.id.setBudget)
@@ -53,6 +60,12 @@ class Category: AppCompatActivity(){
 //        layout.addView(button)
 //        btnList.add(button)
 
+        back.setOnClickListener {
+            val i = Intent(this@Category, MainActivity::class.java)
+            i.putExtra("userID", userId)
+            startActivity(i)
+        }
+
         addButton.setOnClickListener {
             val i = Intent(this@Category, Expense::class.java)
             i.putExtra("userID", userId)
@@ -64,7 +77,7 @@ class Category: AppCompatActivity(){
         }
 
         fun setExpenses(listString: String) {
-            val bString =listString.removePrefix("{").removeSuffix("}")
+            val bString = listString.removePrefix("{").removeSuffix("}")
             val map = bString.split(", ").associate {
                 val (left, right) = it.split("=")
                 left to right.toString()
@@ -89,27 +102,27 @@ class Category: AppCompatActivity(){
             }
         }
 
-        fun setInfo(ref: DocumentSnapshot){
+        fun setInfo(ref: DocumentSnapshot) {
             val data = ref.data!!
-            // set category name
-            categoryTitle.text = data["name"].toString()
-            // set budget
-            if (data["budget"].toString() != "0") {
+            // set budget and amount
+            if (data["budget"].toString() != "0" && data["budget"].toString() != "") {
                 setBudget.visibility = View.GONE
                 amount.visibility = View.VISIBLE
                 budget.visibility = View.VISIBLE
                 budget.text = data["budget"].toString() + "$"
                 amount.text = data["amount"].toString() + "$"
+                // set progress bar
+                updateProgressBar(
+                        data["amount"].toString().toDouble(),
+                        data["budget"].toString().toDouble()
+                )
             }
-            // set progress bar
-            updateProgressBar(
-                data["amount"].toString().toDouble(),
-                data["budget"].toString().toDouble()
-            )
             // set expenses list
-            Log.d("BOTTON", "before")
-            setExpenses(data["expenses"].toString())
-            Log.d("BOTTON", "after")
+            if (data["expenses"].toString() != "{}") {
+                setExpenses(data["expenses"].toString())
+            }
+            // set category name
+            categoryTitle.text = data["name"].toString()
         }
 
         fun createNewCategory(catBudget: String, name: String) {
@@ -189,14 +202,19 @@ class Category: AppCompatActivity(){
 
     }
 
-    fun updateProgressBar(amount: Double, budget: Double) {
+    private fun updateProgressBar(amount: Double, budget: Double) {
         val pb = findViewById<ProgressBar>(R.id.progressBar)
+        val pbRed = findViewById<ProgressBar>(R.id.progressBarRed)
+        pb.visibility = View.VISIBLE
+        pbRed.visibility = View.INVISIBLE
         var percent = 0
         if (budget > 0) {
             percent = (amount / budget * 100).toInt()
         }
-        if (percent > 100) {
+        if (percent >= 100) {
             percent = 100
+            pb.visibility = View.INVISIBLE
+            pbRed.visibility = View.VISIBLE
         }
         if (percent < 0) {
             percent = 0

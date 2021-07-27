@@ -1,15 +1,11 @@
 package com.example.moneytracker
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -21,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.HashMap
+
 
 class Expense: AppCompatActivity(){
     @SuppressLint("SetTextI18n")
@@ -45,8 +42,13 @@ class Expense: AppCompatActivity(){
         val product_name = findViewById<EditText>(R.id.product_name)
         val price = findViewById<EditText>(R.id.price)
         val newExpense = findViewById<TextView>(R.id.title1)
+        val dropdown = findViewById<Spinner>(R.id.spinner1)
         var dataChanged = false
 
+        // dropdown
+        val items = arrayOf("1", "2", "three")
+        val adapter: ArrayAdapter<Any?> = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
+        dropdown.adapter = adapter
 
         date.setOnClickListener {
             // Create the date picker builder and set the title
@@ -68,7 +70,6 @@ class Expense: AppCompatActivity(){
             }
             datePicker.show(supportFragmentManager, "MyTAG")
         }
-
 
         fun setInfo(ref: DocumentSnapshot) {
             val data = ref.data!!
@@ -93,10 +94,35 @@ class Expense: AppCompatActivity(){
                 }
         }
 
+        fun updateAmount(amountToAdd: Double) {
+            Log.d("WWW", "update amount")
+            // update category
+            catRef.get().addOnSuccessListener {
+                val oldAmount = it.get("amount").toString().toDouble()
+                var newAmount = oldAmount + amountToAdd
+                if (newAmount < 0) {
+                    newAmount = 0.0
+                }
+                catRef.update("amount", newAmount.toString())
+                        .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
+                        .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+            }
+            // update month
+            val monthRef = FirebaseFirestore.getInstance().document("Users/$userId/Months/$month")
+            monthRef.get().addOnSuccessListener {
+                val oldAmount = it.get("amount").toString().toDouble()
+                var newAmount = oldAmount + amountToAdd
+                if (newAmount < 0) {
+                    newAmount = 0.0
+                }
+                monthRef.update("amount", newAmount.toString())
+                        .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
+                        .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+            }
+        }
 
         fun updateMap(map: HashMap<String, String>) {
             Log.d("CCC", "update map")
-
             catRef.update("expenses", map)
                 .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
                 .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
@@ -113,7 +139,7 @@ class Expense: AppCompatActivity(){
                     // expenses
                     val c = documentReference.getField<Object>("expenses")!!
                     // if the current map is not empty
-                    if (c.toString() != "Map is empty" && c.toString() != "[]") {
+                    if (c.toString() != "{}") {
                         var cString = c.toString().removePrefix("{").removeSuffix("}")
                         val map = cString.split(", ").associate {
                             val (left, right) = it.split("=")
@@ -139,6 +165,7 @@ class Expense: AppCompatActivity(){
                     "title" to product_name.text.toString(),
                     "price" to price.text.toString()
                 )
+                updateAmount(expense["price"]!!.toDouble())
                 catRef.collection("Expenses")
                     .add(expense)
                     .addOnSuccessListener { documentReference ->
@@ -157,7 +184,9 @@ class Expense: AppCompatActivity(){
                         Log.w("TAG", "Error adding document", e)
                         showMessage("Error: Please try again")
                     }
-            } else if (dataChanged) {
+            }
+            // if it's not a new expense
+            else if (dataChanged) {
                 val expRef = catRef.collection("Expenses").document(expenseId)
                 expRef.update("date", date.text.toString())
                     .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
@@ -168,7 +197,14 @@ class Expense: AppCompatActivity(){
                 expRef.update("title", product_name.text.toString())
                     .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
                     .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
-                expRef.update("price", price.text.toString())
+                var newPrice = price.text.toString()
+                expRef.get().addOnSuccessListener {
+                    var oldPrice = it.get("price").toString()
+                    if (oldPrice != newPrice) {
+                        updateAmount(newPrice.toDouble() - oldPrice.toDouble())
+                    }
+                }
+                expRef.update("price", newPrice)
                     .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
                     .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
             }
@@ -185,11 +221,6 @@ class Expense: AppCompatActivity(){
             if (expenseId != "null") {
                 delete.text = "deleting..."
                 save.isEnabled = false
-                // delete from expenses
-                catRef.collection("Expenses").document(expenseId)
-                        .delete()
-                        .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully deleted!") }
-                        .addOnFailureListener { e -> Log.w("TAG", "Error deleting document", e) }
                 // delete from category
                 catRef.get().addOnCompleteListener {
                     if (it.isSuccessful) {
@@ -214,6 +245,13 @@ class Expense: AppCompatActivity(){
                         updateMap(newMap)
                     }
                 }
+                // update price
+                updateAmount(-price.text.toString().toDouble())
+                // delete from expenses
+                catRef.collection("Expenses").document(expenseId)
+                        .delete()
+                        .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully deleted!") }
+                        .addOnFailureListener { e -> Log.w("TAG", "Error deleting document", e) }
                 val i = Intent(this@Expense, Category::class.java)
                 i.putExtra("userID", userId)
                 i.putExtra("month", month)
@@ -222,6 +260,7 @@ class Expense: AppCompatActivity(){
                 startActivity(i)
             }
         }
+
 
         product_name.afterTextChanged{
             dataChanged = true

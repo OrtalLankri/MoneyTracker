@@ -50,12 +50,11 @@ class MainActivity : AppCompatActivity() {
 
 
         val currentDate = SimpleDateFormat("MMyy").format(Date())
+//        val currentDate = "0621"
         val monthIndex = currentDate.substring(0, 2).toInt()
 
         fun setInfo(ref: DocumentSnapshot){
             val data = ref.data!!
-            // set month name
-            month.text = data["name"].toString()
             // set categories names
             val s = data["categories"].toString().removePrefix("{").removeSuffix("}")
             val categories = s.split(", ").associate {
@@ -75,6 +74,8 @@ class MainActivity : AppCompatActivity() {
             }
             // set progress bar
             updateProgressBar(data["amount"].toString().toDouble(), data["budget"].toString().toDouble())
+            // set month name
+            month.text = data["name"].toString()
         }
 
         fun createNewMonth(categories: Object) {
@@ -151,42 +152,22 @@ class MainActivity : AppCompatActivity() {
             i.putExtra("month", currentDate)
             startActivity(i)
         }
-        //updateProgressBar()
-        //FirebaseApp.initializeApp();
-//        // Create a new user with a first and last name
-//        val user = mapOf(
-//            "first" to "Adi",
-//            "last" to "Lovelace",
-//            "born" to 1815
-//        )
-//        db.set(user).addOnSuccessListener { _ ->
-//            Log.d("TAG", "DocumentSnapshot added with ID")
-//        }
-//            .addOnFailureListener { e ->
-//                Log.w("TAG", "Error adding document", e)
-//            }
-//
-//        db.get().addOnSuccessListener { documentReference ->
-//            Log.d("TAG", "DocumentSnapshot recieved")
-//            val s = documentReference.getString("expensses").toString()
-//            Log.d("TAG", s)
-//        }
-//            .addOnFailureListener { e ->
-//                Log.w("TAG", "Error getting document", e)
-//            }
-
-
     }
 
 
-    private fun updateProgressBar(amount: Double, budget:Double) {
+    private fun updateProgressBar(amount: Double, budget: Double) {
         val pb = findViewById<ProgressBar>(R.id.progressBar)
+        val pbRed = findViewById<ProgressBar>(R.id.progressBarRed)
+        pb.visibility = View.VISIBLE
+        pbRed.visibility = View.INVISIBLE
         var percent = 0
         if (budget > 0) {
-             percent = (amount / budget * 100).toInt()
+            percent = (amount / budget * 100).toInt()
         }
-        if (percent > 100) {
+        if (percent >= 100) {
             percent = 100
+            pb.visibility = View.INVISIBLE
+            pbRed.visibility = View.VISIBLE
         }
         if (percent < 0) {
             percent = 0

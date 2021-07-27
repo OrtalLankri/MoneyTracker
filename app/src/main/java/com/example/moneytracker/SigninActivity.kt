@@ -34,6 +34,7 @@ class SigninActivity : AppCompatActivity() {
         val password2 = findViewById<EditText>(R.id.password2)
         val login = findViewById<TextView>(R.id.login)
         val confirm = findViewById<TextView>(R.id.confirmation)
+        val passwordLength = findViewById<TextView>(R.id.passwordLength)
 
         val db = FirebaseFirestore.getInstance()
 
@@ -101,12 +102,20 @@ class SigninActivity : AppCompatActivity() {
             startActivity(i)
         }
 
-        fun confirmPassword() {
+        fun confirmPassword(): Boolean {
+            passwordLength.visibility = View.INVISIBLE
             confirm.visibility = View.INVISIBLE
-            if (password1.text.isNotBlank() && password2.text.isNotBlank()
-                    && password2.text.toString() != password1.text.toString()) {
-                confirm.visibility = View.VISIBLE
+            val p1 = password1.text.toString()
+            val p2 = password2.text.toString()
+            if ((p1.isNotEmpty() && p1.length < 5) || (p2.length > 0 && p2.length < 5)) {
+                passwordLength.visibility = View.VISIBLE
+                return false
             }
+            else if (p1.isNotEmpty() && p2.isNotEmpty() && p1 != p2) {
+                confirm.visibility = View.VISIBLE
+                return false
+            }
+            return true
         }
 
         fun textChanged() {
@@ -124,12 +133,14 @@ class SigninActivity : AppCompatActivity() {
             textChanged()
         }
         password1.afterTextChanged {
-            confirmPassword()
-            textChanged()
+            if (confirmPassword()) {
+                textChanged()
+            }
         }
         password2.afterTextChanged {
-            confirmPassword()
-            textChanged()
+            if (confirmPassword()) {
+                textChanged()
+            }
         }
     }
 

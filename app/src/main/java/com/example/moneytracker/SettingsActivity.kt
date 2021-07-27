@@ -72,7 +72,7 @@ class SettingsActivity : AppCompatActivity() {
                 }
                 // categories budgets
                 val b = documentReference.getField<Object>("categoriesBudget")!!
-                if (budget.toString() != "0") {
+                if (b.toString() != "0") {
                     val bString = b.toString().removePrefix("{").removeSuffix("}")
                     val bMap = bString.split(", ").associate {
                         val (left, right) = it.split("=")

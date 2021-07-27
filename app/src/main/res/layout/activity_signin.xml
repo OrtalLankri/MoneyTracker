@@ -112,4 +112,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password2" />
 
+    <TextView
+        android:id="@+id/passwordLength"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="password must be 5 characters or longer"
+        android:textColor="#F44336"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

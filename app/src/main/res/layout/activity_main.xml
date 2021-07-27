@@ -113,6 +113,22 @@
         app:layout_constraintTop_toBottomOf="@+id/month"
         tools:progress="60" />
 
+    <ProgressBar
+        android:id="@+id/progressBarRed"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="236dp"
+        android:layout_height="196dp"
+        android:indeterminateOnly="false"
+        android:progressDrawable="@drawable/fullpie"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.462"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/month"
+        app:layout_constraintVertical_bias="0.086"
+        tools:progress="60" />
+
     <TextView
         android:id="@+id/amount"
         android:layout_width="wrap_content"
