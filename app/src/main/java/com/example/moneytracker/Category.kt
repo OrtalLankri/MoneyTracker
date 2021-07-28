@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 class Category: AppCompatActivity(){
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
         CoroutineScope(Dispatchers.IO).launch {  }
@@ -51,14 +50,7 @@ class Category: AppCompatActivity(){
         val expenses = HashMap<String, String>()
 
         val layout = findViewById<LinearLayout>(R.id.layout)
-        val scroll = findViewById<ScrollView>(R.id.scrollView1)
-//        val btnList: MutableList<Button> = ArrayList()
-//        val button = Button(this)
-//        button.layoutParams = LinearLayout.LayoutParams(
-//            LinearLayout.LayoutParams.WRAP_CONTENT,
-//            ViewGroup.LayoutParams.WRAP_CONTENT)
-//        layout.addView(button)
-//        btnList.add(button)
+
 
         back.setOnClickListener {
             val i = Intent(this@Category, MainActivity::class.java)
@@ -199,7 +191,6 @@ class Category: AppCompatActivity(){
             i.putExtra("month", month)
             startActivity(i)
         }
-
     }
 
     private fun updateProgressBar(amount: Double, budget: Double) {
@@ -221,4 +212,19 @@ class Category: AppCompatActivity(){
         }
         pb.progress = percent
     }
+
+//    fun refresh() {
+//        Thread.sleep(5000)
+//        // check if the current category has data already
+//        monthRef.collection("Categories").document(catNum)
+//            .get()
+//            .addOnCompleteListener {
+//                if (it.isSuccessful) {
+//                    val data = it.result!!.data!!
+//                    if (data["expenses"].toString() != "{}") {
+//                        setExpenses(data["expenses"].toString())
+//                    }
+//                }
+//            }
+//    }
 }

@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SigninActivity" ></activity>
+        <activity android:name=".AnalysisActivity" ></activity>
 
         <activity android:name=".Category" ></activity>
         <activity android:name=".Expense" ></activity>

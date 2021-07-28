@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
 
         val userId = intent.getStringExtra("userID").toString()
         val userRef = FirebaseFirestore.getInstance().collection("Users").document(userId)
-        val settings = findViewById<FloatingActionButton>(R.id.settings)
         val month = findViewById<TextView>(R.id.month)
         val cat = arrayListOf<Button>()
         cat.add(findViewById<Button>(R.id.c1))
@@ -47,6 +46,9 @@ class MainActivity : AppCompatActivity() {
         val setBudget = findViewById<TextView>(R.id.setBudget)
         val amount = findViewById<TextView>(R.id.amount)
         val budget = findViewById<TextView>(R.id.budget)
+        val addExpense = findViewById<Button>(R.id.add)
+        val analysis = findViewById<Button>(R.id.analysis)
+        val settings = findViewById<FloatingActionButton>(R.id.settings)
 
 
         val currentDate = SimpleDateFormat("MMyy").format(Date())
@@ -128,10 +130,27 @@ class MainActivity : AppCompatActivity() {
         }
         getDoc()
 
+        addExpense.setOnClickListener {
+            val i = Intent(this@MainActivity, Expense::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", currentDate)
+            i.putExtra("expenseId", "null")
+            i.putExtra("catNum", "null")
+            startActivity(i)
+        }
+
         settings.setOnClickListener {
             val i = Intent(this@MainActivity, SettingsActivity::class.java)
             i.putExtra("userID", userId)
             i.putExtra("month", currentDate)
+            startActivity(i)
+        }
+
+        analysis.setOnClickListener {
+            val i = Intent(this@MainActivity, AnalysisActivity::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", currentDate)
+            i.putExtra("monthName", month.text.toString())
             startActivity(i)
         }
 
