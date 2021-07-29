@@ -120,7 +120,9 @@ class LoginActivity : AppCompatActivity() {
                                     login.text = "Success"
                                     val i = Intent(this@LoginActivity, MainActivity::class.java)
                                     i.putExtra("userID", result.documents[0].id)
+                                    i.putExtra("month", "null")
                                     startActivity(i)
+                                    finish()
                                 }
                             }
                         }

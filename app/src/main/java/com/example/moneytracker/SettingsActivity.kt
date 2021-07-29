@@ -141,7 +141,9 @@ class SettingsActivity : AppCompatActivity() {
             // go back to main page
             val i = Intent(this@SettingsActivity, MainActivity::class.java)
             i.putExtra("userID", userId)
+            i.putExtra("month", month)
             startActivity(i)
+            finish()
         }
 
         fun checkBudget() {

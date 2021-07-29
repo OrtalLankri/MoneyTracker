@@ -52,18 +52,20 @@ class Expense: AppCompatActivity() {
         val spin = findViewById<ProgressBar>(R.id.spin)
         var dataChanged = false
         var isCategoryChosen = false
+        var isCategoryFixed = category != "null"
 
 
         val spinnerListener = object : OnItemSelectedListener {
             override fun onItemSelected(av: AdapterView<*>?, v: View, i: Int, l: Long) {
                 Log.d("position", i.toString())
                 val pos = i + 1
-                if (category == "null") {
+                if (!isCategoryFixed) {
                     category = "c$pos"
                     catRef = FirebaseFirestore.getInstance()
                         .document("Users/$userId/Months/$month/Categories/$category")
                     isCategoryChosen = true
                 }
+                save.isEnabled = price.text.isNotBlank() && product_name.text.isNotBlank() && isCategoryChosen
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 TODO("Not yet implemented")
@@ -258,6 +260,7 @@ class Expense: AppCompatActivity() {
             i.putExtra("catNum", category)
             i.putExtra("fromExpense", true)
             startActivity(i)
+            finish()
         }
 
         delete.setOnClickListener {
@@ -304,6 +307,7 @@ class Expense: AppCompatActivity() {
                 i.putExtra("catNum", category)
                 i.putExtra("fromExpense", true)
                 startActivity(i)
+                finish()
             }
         }
 

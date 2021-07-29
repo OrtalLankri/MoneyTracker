@@ -26,12 +26,10 @@
         android:indeterminateOnly="false"
         android:progressDrawable="@drawable/fullpie"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.462"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Category"
-        app:layout_constraintVertical_bias="0.086"
         tools:progress="60" />
 
     <!--    <ScrollView-->

@@ -55,6 +55,7 @@ class Category: AppCompatActivity(){
         back.setOnClickListener {
             val i = Intent(this@Category, MainActivity::class.java)
             i.putExtra("userID", userId)
+            i.putExtra("month", month)
             startActivity(i)
         }
 

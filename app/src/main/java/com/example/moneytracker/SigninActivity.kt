@@ -62,7 +62,9 @@ class SigninActivity : AppCompatActivity() {
                         showMessage("Welcome $name!")
                         val i = Intent(this@SigninActivity, MainActivity::class.java)
                         i.putExtra("userID", documentReference.id)
+                        i.putExtra("month", "null")
                         startActivity(i)
+                        finish()
                     }
                     .addOnFailureListener { e ->
                         Log.w("TAG", "Error adding document", e)

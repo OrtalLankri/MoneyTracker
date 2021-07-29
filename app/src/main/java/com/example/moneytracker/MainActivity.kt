@@ -5,10 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.DocumentSnapshot
@@ -19,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
+
 
 enum class Months {
     January, February, March, April, May, June, July, August, September, October, November, December
@@ -35,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         val userId = intent.getStringExtra("userID").toString()
         val userRef = FirebaseFirestore.getInstance().collection("Users").document(userId)
+        val monthName = intent.getStringExtra("month").toString()
         val month = findViewById<TextView>(R.id.month)
         val cat = arrayListOf<Button>()
         cat.add(findViewById<Button>(R.id.c1))
@@ -49,11 +47,21 @@ class MainActivity : AppCompatActivity() {
         val addExpense = findViewById<Button>(R.id.add)
         val analysis = findViewById<Button>(R.id.analysis)
         val settings = findViewById<FloatingActionButton>(R.id.settings)
+        val prev = findViewById<ImageButton>(R.id.prev)
+        val next = findViewById<ImageButton>(R.id.next)
 
 
-        val currentDate = SimpleDateFormat("MMyy").format(Date())
-//        val currentDate = "0621"
-        val monthIndex = currentDate.substring(0, 2).toInt()
+        val currentDate = if (monthName == "null") {
+            SimpleDateFormat("MMyy").format(Date())
+        } else {
+            monthName
+        }
+
+        if (currentDate == SimpleDateFormat("MMyy").format(Date())) {
+            next.visibility = View.GONE
+        }
+
+        val monthIndex= currentDate.substring(0, 2).toInt()
 
         fun setInfo(ref: DocumentSnapshot){
             val data = ref.data!!
@@ -150,7 +158,6 @@ class MainActivity : AppCompatActivity() {
             val i = Intent(this@MainActivity, AnalysisActivity::class.java)
             i.putExtra("userID", userId)
             i.putExtra("month", currentDate)
-            i.putExtra("monthName", month.text.toString())
             startActivity(i)
         }
 
@@ -170,6 +177,24 @@ class MainActivity : AppCompatActivity() {
             i.putExtra("userID", userId)
             i.putExtra("month", currentDate)
             startActivity(i)
+        }
+
+        next.setOnClickListener {
+            val m = AnalysisActivity().next(currentDate)
+            val i = Intent(this@MainActivity, MainActivity::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", m)
+            startActivity(i)
+            finish()
+        }
+
+        prev.setOnClickListener {
+            val m = AnalysisActivity().prev(currentDate)
+            val i = Intent(this@MainActivity, MainActivity::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", m)
+            startActivity(i)
+            finish()
         }
     }
 

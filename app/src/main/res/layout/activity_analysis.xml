@@ -31,67 +31,61 @@
     <ProgressBar
         android:id="@+id/p_c1"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="261dp"
+        android:layout_width="240dp"
         android:layout_height="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="32dp"
-        app:layout_constraintStart_toEndOf="@+id/n_c1"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/month" />
 
     <ProgressBar
         android:id="@+id/p_c2"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="261dp"
+        android:layout_width="240dp"
         android:layout_height="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@+id/n_c1"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/p_c1"
         app:layout_constraintTop_toBottomOf="@+id/p_c1" />
 
     <ProgressBar
         android:id="@+id/p_c3"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="261dp"
+        android:layout_width="240dp"
         android:layout_height="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@+id/n_c1"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/p_c1"
+        app:layout_constraintStart_toStartOf="@+id/p_c2"
         app:layout_constraintTop_toBottomOf="@+id/p_c2" />
 
     <ProgressBar
         android:id="@+id/p_c4"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="261dp"
+        android:layout_width="240dp"
         android:layout_height="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@+id/n_c1"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/p_c3"
+        app:layout_constraintStart_toStartOf="@+id/p_c3"
         app:layout_constraintTop_toBottomOf="@+id/p_c3" />
 
     <ProgressBar
         android:id="@+id/p_c5"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="261dp"
+        android:layout_width="240dp"
         android:layout_height="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@+id/n_c1"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/p_c4"
+        app:layout_constraintStart_toStartOf="@+id/p_c4"
         app:layout_constraintTop_toBottomOf="@+id/p_c4" />
 
     <ProgressBar
         android:id="@+id/p_c6"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="261dp"
+        android:layout_width="240dp"
         android:layout_height="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@+id/n_c1"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/p_c5"
+        app:layout_constraintStart_toStartOf="@+id/p_c5"
         app:layout_constraintTop_toBottomOf="@+id/p_c5" />
 
     <TextView
@@ -101,6 +95,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/p_c1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/p_c1" />
 
@@ -109,6 +105,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/p_c2"
         app:layout_constraintStart_toStartOf="@+id/n_c1"
         app:layout_constraintTop_toTopOf="@+id/p_c2" />
 
@@ -117,6 +115,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/p_c3"
         app:layout_constraintStart_toStartOf="@+id/n_c1"
         app:layout_constraintTop_toTopOf="@+id/p_c3" />
 
@@ -125,6 +125,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/p_c4"
         app:layout_constraintStart_toStartOf="@+id/n_c1"
         app:layout_constraintTop_toTopOf="@+id/p_c4" />
 
@@ -133,6 +135,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/p_c5"
         app:layout_constraintStart_toStartOf="@+id/n_c1"
         app:layout_constraintTop_toTopOf="@+id/p_c5" />
 
@@ -141,8 +145,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/p_c6"
         app:layout_constraintStart_toStartOf="@+id/n_c1"
         app:layout_constraintTop_toTopOf="@+id/p_c6" />
+
+    <ImageButton
+        android:id="@+id/prev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:rotation="90"
+        android:rotationY="0"
+        app:layout_constraintBottom_toBottomOf="@+id/month"
+        app:layout_constraintEnd_toStartOf="@+id/month"
+        app:layout_constraintTop_toTopOf="@+id/month"
+        app:srcCompat="@android:drawable/arrow_down_float" />
+
+    <ImageButton
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:rotation="-90"
+        android:rotationY="0"
+        app:layout_constraintBottom_toBottomOf="@+id/prev"
+        app:layout_constraintStart_toEndOf="@+id/month"
+        app:layout_constraintTop_toTopOf="@+id/prev"
+        app:srcCompat="@android:drawable/arrow_down_float" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
