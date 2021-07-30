@@ -1,0 +1,17 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+        <gradient
+            android:endX="85.84757"
+            android:endY="92.4963"
+            android:startX="42.9492"
+            android:startY="49.59793"
+            android:type="linear">
+                <item android:drawable="@drawable/icon1" >
+                </item>
+        </gradient>
+
+</layer-list>

@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.getField
@@ -18,6 +20,9 @@ import kotlinx.coroutines.launch
 
 class Category: AppCompatActivity(){
     @SuppressLint("SetTextI18n")
+
+    val CHANNEL_ID = "channel"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
@@ -212,6 +217,34 @@ class Category: AppCompatActivity(){
             percent = 0
         }
         pb.progress = percent
+        notify(percent)
+    }
+
+    private fun notify(percent: Int) {
+        if (percent > 97) {
+            val name = intent.getStringExtra("name").toString()
+            if (percent >= 100) {
+                notification("You Have Reached The \"$name\" Budget", "Please note that you have " +
+                        "reached the budget limit you have set for the \"$name\" category")
+            } else {
+                notification("Getting Close To \"$name\"'s Budget", "The amount you have spent on \"$name\"" +
+                        " is getting close to the budget limit.\nwatch your spending carefully")
+            }
+        }
+    }
+
+    private fun notification(title: String, text: String) {
+        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.notification_icon)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setStyle(NotificationCompat.BigTextStyle()
+                        .bigText(text))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+        val notificationManager = NotificationManagerCompat.from(this)
+        notificationManager.notify(0, builder.build())
+
     }
 
 //    fun refresh() {

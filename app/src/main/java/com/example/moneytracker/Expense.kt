@@ -1,7 +1,9 @@
 package com.example.moneytracker
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -19,14 +21,10 @@ import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
-import kotlin.collections.HashMap
-import kotlin.concurrent.thread
 
 
 class Expense: AppCompatActivity() {
     @SuppressLint("SetTextI18n")
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +83,7 @@ class Expense: AppCompatActivity() {
                 isCategoryChosen = true
             } else {
                 for (i in 1..6) {
-                    items[i-1] = categories["c$i"].toString()
+                    items[i - 1] = categories["c$i"].toString()
                 }
             }
             val adapter: ArrayAdapter<Any?> = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
@@ -172,13 +170,13 @@ class Expense: AppCompatActivity() {
                 .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
         }
 
-        fun addExpenseToCategory(string: String, id : String) {
+        fun addExpenseToCategory(string: String, id: String) {
             Log.d("CCC", "add expense")
             catRef.get().addOnCompleteListener {
                 if (it.isSuccessful) {
                     val documentReference = it.result!!
                     val newMap = hashMapOf(
-                        id to string
+                            id to string
                     )
                     // expenses
                     val c = documentReference.getField<Object>("expenses")!!
@@ -205,18 +203,18 @@ class Expense: AppCompatActivity() {
             if (expenseId == "null") {
                 Log.d("CCC", "new expense")
                 val expense = hashMapOf(
-                    "date" to date.text.toString(),
-                    "description" to remark.text.toString(),
-                    "title" to product_name.text.toString(),
-                    "price" to price.text.toString()
+                        "date" to date.text.toString(),
+                        "description" to remark.text.toString(),
+                        "title" to product_name.text.toString(),
+                        "price" to price.text.toString()
                 )
                 updateAmount(expense["price"]!!.toDouble())
                 catRef.collection("Expenses")
                     .add(expense)
                     .addOnSuccessListener { documentReference ->
                         Log.d(
-                            "TAG",
-                            "DocumentSnapshot written with ID-------------------------------------: ${documentReference.id}"
+                                "TAG",
+                                "DocumentSnapshot written with ID-------------------------------------: ${documentReference.id}"
                         )
                         // add expense to category
                         val expenseString = expense["title"] + " - " + expense["price"] + "$"
@@ -338,7 +336,5 @@ class Expense: AppCompatActivity() {
     private fun showMessage(s: String) {
         Toast.makeText(applicationContext, s, Toast.LENGTH_LONG).show()
     }
-
-
 
 }

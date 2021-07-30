@@ -20,9 +20,6 @@ import kotlinx.coroutines.launch
 
 
 class SettingsActivity : AppCompatActivity() {
-    private lateinit var settingsViewModel: SettingsViewModel
-    private lateinit var budget : TextView
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

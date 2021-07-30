@@ -1,12 +1,20 @@
 package com.example.moneytracker
 
 import android.annotation.SuppressLint
+import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.text.Layout
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,11 +32,15 @@ enum class Months {
 
 class MainActivity : AppCompatActivity() {
 
+    val CHANNEL_ID = "channel"
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         CoroutineScope(Dispatchers.IO).launch {  }
+
+        createNotificationChannel()
 
         val userId = intent.getStringExtra("userID").toString()
         val userRef = FirebaseFirestore.getInstance().collection("Users").document(userId)
@@ -45,11 +57,14 @@ class MainActivity : AppCompatActivity() {
         val amount = findViewById<TextView>(R.id.amount)
         val budget = findViewById<TextView>(R.id.budget)
         val addExpense = findViewById<Button>(R.id.add)
+        val menu = findViewById<LinearLayout>(R.id.menu)
+        val expanded_menu = findViewById<Button>(R.id.expanded_menu)
         val analysis = findViewById<Button>(R.id.analysis)
-        val settings = findViewById<FloatingActionButton>(R.id.settings)
+        val graph = findViewById<Button>(R.id.graph)
+        val settings = findViewById<Button>(R.id.settings)
         val prev = findViewById<ImageButton>(R.id.prev)
         val next = findViewById<ImageButton>(R.id.next)
-
+        val layout = findViewById<ConstraintLayout>(R.id.layout)
 
         val currentDate = if (monthName == "null") {
             SimpleDateFormat("MMyy").format(Date())
@@ -63,6 +78,8 @@ class MainActivity : AppCompatActivity() {
 
         val monthIndex= currentDate.substring(0, 2).toInt()
 
+        menu.visibility = View.GONE
+
         fun setInfo(ref: DocumentSnapshot){
             val data = ref.data!!
             // set categories names
@@ -72,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                 left to right.toString()
             }
             for (i in 1..6) {
-                cat[i-1].text = categories["c$i"]
+                cat[i - 1].text = categories["c$i"]
             }
             // set budget
             if (data["budget"].toString() != "0") {
@@ -89,7 +106,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         fun createNewMonth(categories: Object) {
-            val name = Months.values()[monthIndex-1].name
+            val name = Months.values()[monthIndex - 1].name
             val month = hashMapOf(
                     "name" to name,
                     "budget" to 0,
@@ -147,6 +164,16 @@ class MainActivity : AppCompatActivity() {
             startActivity(i)
         }
 
+        expanded_menu.setOnClickListener {
+            expanded_menu.visibility = View.GONE
+            menu.visibility = View.VISIBLE
+            menu.bringToFront()
+            layout.setOnClickListener {
+                menu.visibility = View.GONE
+                expanded_menu.visibility = View.VISIBLE
+            }
+        }
+
         settings.setOnClickListener {
             val i = Intent(this@MainActivity, SettingsActivity::class.java)
             i.putExtra("userID", userId)
@@ -161,12 +188,19 @@ class MainActivity : AppCompatActivity() {
             startActivity(i)
         }
 
+        graph.setOnClickListener {
+            val i = Intent(this@MainActivity, GraphActivity::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", currentDate)
+            startActivity(i)
+        }
+
         for (j in 1..6) {
-            cat[j-1].setOnClickListener {
+            cat[j - 1].setOnClickListener {
                 val i = Intent(this@MainActivity, Category::class.java)
                 i.putExtra("userID", userId)
                 i.putExtra("month", currentDate)
-                i.putExtra("name", cat[j-1].text.toString())
+                i.putExtra("name", cat[j - 1].text.toString())
                 i.putExtra("catNum", "c$j")
                 startActivity(i)
             }
@@ -196,8 +230,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(i)
             finish()
         }
-    }
 
+
+
+//        scheduleNotification("sced", "this is sced", 10)
+    }
 
     private fun updateProgressBar(amount: Double, budget: Double) {
         val pb = findViewById<ProgressBar>(R.id.progressBar)
@@ -217,6 +254,75 @@ class MainActivity : AppCompatActivity() {
             percent = 0
         }
         pb.progress = percent
+        notify(percent)
     }
+
+
+    private fun notify(percent: Int) {
+        if (percent >= 100) {
+            notification("You Have Reached The Budget Limit", "Please note that you have " +
+                    "reached the budget limit you have set for this month.\nYou can always try again next month")
+        } else if (percent >= 97) {
+            notification("Getting Close To Budget", "The amount you have spent this month" +
+                    " is getting close to the budget limit.\nwatch your spending carefully")
+
+        }
+    }
+
+    private fun notification(title: String, text: String) {
+        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.notification_icon)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setStyle(NotificationCompat.BigTextStyle()
+                        .bigText(text))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+        val notificationManager = NotificationManagerCompat.from(this)
+        notificationManager.notify(0, builder.build())
+
+    }
+
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val name = getString(R.string.channel_name)
+            val name = "Notification"
+//            val descriptionText = getString(R.string.channel_description)
+            val descriptionText = "This is the notification for the MoneyTracker App"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+//    private fun scheduleNotification(title: String, text: String, delay: Long) {
+//        Log.d("Timer", "called")
+//        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
+//                .setContentTitle(title)
+//                .setContentText(text)
+//                .setAutoCancel(true)
+//                .setSmallIcon(R.drawable.notification_icon)
+//        val intent = Intent(this, MainActivity::class.java)
+//        val activity = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+//        builder.setContentIntent(activity)
+//        val notification = builder.build()
+//        val notificationIntent = Intent(this, MainActivity::class.java)
+//        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION_ID, 0)
+//        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification)
+//        val pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT)
+//        val futureInMillis = SystemClock.elapsedRealtime() + delay
+//        val alarmManager = this.getSystemService(ALARM_SERVICE) as AlarmManager
+//        alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
+//        Log.d("Timer", "finished")
+//
+//    }
+
 
 }
