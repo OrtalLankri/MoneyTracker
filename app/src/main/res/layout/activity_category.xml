@@ -140,7 +140,7 @@
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="331dp"
-        android:layout_height="276dp"
+        android:layout_height="270dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@+id/add"
         app:layout_constraintStart_toStartOf="@+id/add"
@@ -161,7 +161,7 @@
         android:id="@+id/Category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="44dp"
         android:text="Loading..."
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -210,6 +210,7 @@
         android:layout_height="39dp"
         android:background="@color/purple_200"
         android:text="Add New Expense"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
@@ -219,10 +220,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
         android:text="Return"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:drawableLeft="?attr/homeAsUpIndicator"
+        android:drawableTint="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline

@@ -10,7 +10,7 @@
         android:id="@+id/month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="96dp"
         android:text="Loading..."
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,10 +22,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
         android:text="Return"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:drawableLeft="?attr/homeAsUpIndicator"
+        android:drawableTint="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar

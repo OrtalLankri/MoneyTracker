@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.example.moneytracker.ui.login.LoginActivity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.DocumentSnapshot
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         val prev = findViewById<ImageButton>(R.id.prev)
         val next = findViewById<ImageButton>(R.id.next)
         val layout = findViewById<ConstraintLayout>(R.id.layout)
+        val logout = findViewById<Button>(R.id.logout)
 
         val currentDate = if (monthName == "null") {
             SimpleDateFormat("MMyy").format(Date())
@@ -90,6 +92,11 @@ class MainActivity : AppCompatActivity() {
             }
             for (i in 1..6) {
                 cat[i - 1].text = categories["c$i"]
+                if (categories["c$i"]!!.length > 6) {
+                    cat[i - 1].setTextSize(12.toFloat())
+                } else {
+                    cat[i - 1].setTextSize(14.toFloat())
+                }
             }
             // set budget
             if (data["budget"].toString() != "0") {
@@ -107,7 +114,7 @@ class MainActivity : AppCompatActivity() {
 
         fun createNewMonth(categories: Object) {
             val name = Months.values()[monthIndex - 1].name
-            val month = hashMapOf(
+            val newMonth = hashMapOf(
                     "name" to name,
                     "budget" to 0,
                     "amount" to 0,
@@ -115,7 +122,7 @@ class MainActivity : AppCompatActivity() {
                     "categoriesBudget" to 0
             )
             userRef.collection("Months").document(currentDate)
-                    .set(month).addOnSuccessListener {
+                    .set(newMonth).addOnSuccessListener {
                         Log.d("TAG", "Month document added successfully")
                     }
                     .addOnFailureListener { e ->
@@ -232,8 +239,12 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        logout.setOnClickListener {
+            val i = Intent(this@MainActivity, LoginActivity::class.java)
+            startActivity(i)
+            finish()
+        }
 
-//        scheduleNotification("sced", "this is sced", 10)
     }
 
     private fun updateProgressBar(amount: Double, budget: Double) {

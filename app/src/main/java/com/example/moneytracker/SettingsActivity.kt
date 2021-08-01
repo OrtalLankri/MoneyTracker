@@ -1,5 +1,6 @@
 package com.example.moneytracker
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -120,21 +121,21 @@ class SettingsActivity : AppCompatActivity() {
                 }
                 // update in month document
                 monthRef.update("categoriesBudget", newBudget)
-                        .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
-                        .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+                        .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+                        .addOnFailureListener { e -> Log.w(TAG, "Error updating month document", e) }
                 // update in category document
                 for (i in 1..6) {
                     val cat = "c$i"
                     monthRef.collection("Categories").document(cat)
                             .update("budget", newBudget[cat])
-                            .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
-                            .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+                            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+                            .addOnFailureListener { e -> Log.w(TAG, "Error updating category document", e) }
                 }
             }
             // update budget in month document
             monthRef.update("budget", budget.text.toString())
-                    .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
-                    .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
+                    .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+                    .addOnFailureListener { e -> Log.w(TAG, "Error updating budget in month document", e) }
             // go back to main page
             val i = Intent(this@SettingsActivity, MainActivity::class.java)
             i.putExtra("userID", userId)

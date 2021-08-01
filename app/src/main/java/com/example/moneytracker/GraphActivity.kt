@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jjoe64.graphview.DefaultLabelFormatter
 import com.jjoe64.graphview.GraphView
@@ -29,6 +30,7 @@ class GraphActivity : AppCompatActivity() {
             val back = findViewById<Button>(R.id.back)
             val graph = findViewById<GraphView>(R.id.graph)
             graph.title = "Monthly Expenses Distribution Graph"
+            graph.titleTextSize = 70F
             val format = SimpleDateFormat("MM/yy")
             graph.gridLabelRenderer.labelFormatter = object : DefaultLabelFormatter() {
                 override fun formatLabel(value: Double, isValueX: Boolean): String {

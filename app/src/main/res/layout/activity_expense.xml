@@ -6,25 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--    <EditText-->
-<!--        android:id="@+id/date"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="128dp"-->
-<!--        android:ems="10"-->
-<!--        android:hint="Date"-->
-<!--        android:inputType="date"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/title1" />-->
 
     <Button
         android:id="@+id/date"
         android:layout_width="207dp"
-        android:layout_height="59dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:ems="10"
         android:text="SELECT DATE"
+        android:drawableLeft="@android:drawable/ic_menu_today"
+        android:drawableTint="@color/white"
+        android:drawableTintMode="multiply"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title1" />
@@ -87,6 +79,7 @@
         android:layout_marginTop="68dp"
         android:text="New Expense"
         android:textSize="28sp"
+        android:textColor="@color/design_default_color_primary_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,12 +98,15 @@
 
     <Button
         android:id="@+id/delete"
-        android:layout_width="167dp"
-        android:layout_height="45dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:enabled="true"
         android:text="Delete Expense"
         android:visibility="gone"
         app:backgroundTint="#E53935"
+        android:drawableLeft="@android:drawable/ic_menu_delete"
+        android:drawableTint="@color/white"
+        android:drawableTintMode="multiply"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/save_button" />
