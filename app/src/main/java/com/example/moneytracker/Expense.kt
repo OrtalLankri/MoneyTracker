@@ -32,7 +32,6 @@ class Expense: AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch { }
 
         var category = intent.getStringExtra("catNum").toString()
-        Log.d("baby", category)
         val userId = intent.getStringExtra("userID").toString()
         val month = intent.getStringExtra("month").toString()
         val expenseId = intent.getStringExtra("expenseId").toString()
@@ -104,8 +103,8 @@ class Expense: AppCompatActivity() {
                 // Create calendar object and set the date to be that returned from selection
                 val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
                 calendar.time = Date(it)
-                date.text = "${calendar.get(Calendar.DAY_OF_MONTH)}- " +
-                        "${calendar.get(Calendar.MONTH) + 1}- "+
+                date.text = "${calendar.get(Calendar.DAY_OF_MONTH)} - " +
+                        "${calendar.get(Calendar.MONTH) + 1} - "+
                 "${calendar.get(Calendar.YEAR)}"
 
             }
@@ -120,8 +119,17 @@ class Expense: AppCompatActivity() {
             date.text = data["date"].toString()
         }
 
+        // if the information came from the scanned receipt
+        if (expenseId == "scan") {
+            product_name.setText(intent.getStringExtra("scanTitle").toString())
+            price.setText(intent.getStringExtra("scanPrice").toString())
+            val dateArr = intent.getStringExtra("scanDate").toString().replace(".", "/").replace("-", "/").split("/")
+            if (dateArr.size >= 3) {
+                date.text = "${dateArr[0]} - ${dateArr[1]} - ${dateArr[2]}"
+            }
+        }
         // if expense already exist
-        if (expenseId != "null") {
+        else if (expenseId != "null") {
             newExpense.visibility = View.INVISIBLE
             delete.visibility = View.VISIBLE
             catRef.collection("Expenses").document(expenseId)
@@ -196,11 +204,21 @@ class Expense: AppCompatActivity() {
             }
         }
 
+        fun goBack() {
+            val i = Intent(this@Expense, Category::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", month)
+            i.putExtra("name", intent.getStringExtra("category").toString())
+            i.putExtra("catNum", category)
+            startActivity(i)
+            finish()
+        }
+
         save.setOnClickListener {
-            save.text = "Saving..."
+            save.isEnabled = false
             spin.visibility = View.VISIBLE
             // if it's a new expense
-            if (expenseId == "null") {
+            if (expenseId == "null" || expenseId == "scan") {
                 Log.d("CCC", "new expense")
                 val expense = hashMapOf(
                         "date" to date.text.toString(),
@@ -251,14 +269,15 @@ class Expense: AppCompatActivity() {
                     .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
                     .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
             }
-            val i = Intent(this@Expense, Category::class.java)
-            i.putExtra("userID", userId)
-            i.putExtra("month", month)
-            i.putExtra("name", intent.getStringExtra("category").toString())
-            i.putExtra("catNum", category)
-            i.putExtra("fromExpense", true)
-            startActivity(i)
-            finish()
+//            recreate()
+//            val i = Intent(this@Expense, Category::class.java)
+//            i.putExtra("userID", userId)
+//            i.putExtra("month", month)
+//            i.putExtra("name", intent.getStringExtra("category").toString())
+//            i.putExtra("catNum", category)
+//            startActivity(i)
+//            finish()
+            goBack()
         }
 
         delete.setOnClickListener {
@@ -298,14 +317,8 @@ class Expense: AppCompatActivity() {
                         .delete()
                         .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully deleted!") }
                         .addOnFailureListener { e -> Log.w("TAG", "Error deleting document", e) }
-                val i = Intent(this@Expense, Category::class.java)
-                i.putExtra("userID", userId)
-                i.putExtra("month", month)
-                i.putExtra("name", intent.getStringExtra("category").toString())
-                i.putExtra("catNum", category)
-                i.putExtra("fromExpense", true)
-                startActivity(i)
-                finish()
+//                recreate()
+                goBack()
             }
         }
 
@@ -336,5 +349,6 @@ class Expense: AppCompatActivity() {
     private fun showMessage(s: String) {
         Toast.makeText(applicationContext, s, Toast.LENGTH_LONG).show()
     }
+
 
 }

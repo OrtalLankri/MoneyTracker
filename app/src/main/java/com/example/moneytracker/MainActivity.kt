@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         val amount = findViewById<TextView>(R.id.amount)
         val budget = findViewById<TextView>(R.id.budget)
         val addExpense = findViewById<Button>(R.id.add)
+        val scan = findViewById<Button>(R.id.scan)
         val menu = findViewById<LinearLayout>(R.id.menu)
         val expanded_menu = findViewById<Button>(R.id.expanded_menu)
         val analysis = findViewById<Button>(R.id.analysis)
@@ -168,6 +169,13 @@ class MainActivity : AppCompatActivity() {
             i.putExtra("month", currentDate)
             i.putExtra("expenseId", "null")
             i.putExtra("catNum", "null")
+            startActivity(i)
+        }
+
+        scan.setOnClickListener {
+            val i = Intent(this@MainActivity, ScanActivity::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", currentDate)
             startActivity(i)
         }
 

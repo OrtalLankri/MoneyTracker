@@ -23,14 +23,6 @@
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="ocr" />
-<!--        <activity-->
-<!--            android:name=".Camera"-->
-<!--            android:label="Camera">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="Money Tracker">
@@ -40,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" ></activity>
-        <activity android:name=".Camera" android:label="Camera"></activity>
+        <activity android:name=".ScanActivity" android:label="Scanner"></activity>
         <activity android:name=".SigninActivity" ></activity>
         <activity android:name=".AnalysisActivity" ></activity>
         <activity android:name=".GraphActivity" ></activity>

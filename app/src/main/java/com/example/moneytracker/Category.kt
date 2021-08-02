@@ -72,6 +72,7 @@ class Category: AppCompatActivity(){
             i.putExtra("catNum", catNum)
             i.putExtra("expenseId", "null")
             startActivity(i)
+            finish()
         }
 
         fun setExpenses(listString: String) {
@@ -96,6 +97,7 @@ class Category: AppCompatActivity(){
                     i.putExtra("catNum", catNum)
                     i.putExtra("expenseId", id)
                     startActivity(i)
+                    finish()
                 }
             }
         }
@@ -247,18 +249,4 @@ class Category: AppCompatActivity(){
 
     }
 
-//    fun refresh() {
-//        Thread.sleep(5000)
-//        // check if the current category has data already
-//        monthRef.collection("Categories").document(catNum)
-//            .get()
-//            .addOnCompleteListener {
-//                if (it.isSuccessful) {
-//                    val data = it.result!!.data!!
-//                    if (data["expenses"].toString() != "{}") {
-//                        setExpenses(data["expenses"].toString())
-//                    }
-//                }
-//            }
-//    }
 }
