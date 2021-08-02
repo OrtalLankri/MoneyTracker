@@ -239,7 +239,9 @@ class Expense: AppCompatActivity() {
                         val id = documentReference.id
                         Log.d("CCC", "before add to cat id: $id")
                         addExpenseToCategory(expenseString, id)
+                        Thread.sleep(1000)
                         showMessage("Saved Successfully!")
+                        goBack()
                     }
                     .addOnFailureListener { e ->
                         Log.w("TAG", "Error adding document", e)
@@ -266,18 +268,14 @@ class Expense: AppCompatActivity() {
                     }
                 }
                 expRef.update("price", newPrice)
-                    .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
+                    .addOnSuccessListener {
+                        Log.d("TAG", "DocumentSnapshot successfully updated!")
+                        showMessage("Saved Successfully!")
+                        Thread.sleep(1000)
+                        goBack()
+                    }
                     .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
             }
-//            recreate()
-//            val i = Intent(this@Expense, Category::class.java)
-//            i.putExtra("userID", userId)
-//            i.putExtra("month", month)
-//            i.putExtra("name", intent.getStringExtra("category").toString())
-//            i.putExtra("catNum", category)
-//            startActivity(i)
-//            finish()
-            goBack()
         }
 
         delete.setOnClickListener {
@@ -286,6 +284,15 @@ class Expense: AppCompatActivity() {
                 delete.text = "deleting..."
                 save.isEnabled = false
                 spin.visibility = View.VISIBLE
+                // update price
+                updateAmount(-price.text.toString().toDouble())
+                // delete from expenses
+                catRef.collection("Expenses").document(expenseId)
+                        .delete()
+                        .addOnSuccessListener {
+                            Log.d("TAG", "DocumentSnapshot successfully deleted!")
+                        }
+                        .addOnFailureListener { e -> Log.w("TAG", "Error deleting document", e) }
                 // delete from category
                 catRef.get().addOnCompleteListener {
                     if (it.isSuccessful) {
@@ -308,17 +315,11 @@ class Expense: AppCompatActivity() {
                             }
                         }
                         updateMap(newMap)
+                        showMessage("Item deleted Successfully")
+                        Thread.sleep(1000)
+                        goBack()
                     }
                 }
-                // update price
-                updateAmount(-price.text.toString().toDouble())
-                // delete from expenses
-                catRef.collection("Expenses").document(expenseId)
-                        .delete()
-                        .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully deleted!") }
-                        .addOnFailureListener { e -> Log.w("TAG", "Error deleting document", e) }
-//                recreate()
-                goBack()
             }
         }
 

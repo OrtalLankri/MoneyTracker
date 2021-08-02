@@ -22,6 +22,7 @@ class Category: AppCompatActivity(){
     @SuppressLint("SetTextI18n")
 
     val CHANNEL_ID = "channel"
+    var categoryName = "null"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +32,8 @@ class Category: AppCompatActivity(){
         val userId = intent.getStringExtra("userID").toString()
         val month = intent.getStringExtra("month").toString()
         val monthRef = FirebaseFirestore.getInstance().document("Users/$userId/Months/$month")
-        val catName = intent.getStringExtra("name").toString()
+        var catName = intent.getStringExtra("name").toString()
+        categoryName = catName
         val catNum = intent.getStringExtra("catNum").toString()
         // set background color
         val colors = hashMapOf<String, String>(
@@ -72,7 +74,6 @@ class Category: AppCompatActivity(){
             i.putExtra("catNum", catNum)
             i.putExtra("expenseId", "null")
             startActivity(i)
-            finish()
         }
 
         fun setExpenses(listString: String) {
@@ -97,13 +98,16 @@ class Category: AppCompatActivity(){
                     i.putExtra("catNum", catNum)
                     i.putExtra("expenseId", id)
                     startActivity(i)
-                    finish()
                 }
             }
         }
 
         fun setInfo(ref: DocumentSnapshot) {
             val data = ref.data!!
+            // set category name
+            categoryTitle.text = data["name"].toString()
+            catName = data["name"].toString()
+            categoryName = catName
             // set budget and amount
             if (data["budget"].toString() != "0" && data["budget"].toString() != "") {
                 setBudget.visibility = View.GONE
@@ -121,8 +125,6 @@ class Category: AppCompatActivity(){
             if (data["expenses"].toString() != "{}") {
                 setExpenses(data["expenses"].toString())
             }
-            // set category name
-            categoryTitle.text = data["name"].toString()
         }
 
         fun createNewCategory(catBudget: String, name: String) {
@@ -224,12 +226,11 @@ class Category: AppCompatActivity(){
 
     private fun notify(percent: Int) {
         if (percent > 97) {
-            val name = intent.getStringExtra("name").toString()
             if (percent >= 100) {
-                notification("You Have Reached The \"$name\" Budget", "Please note that you have " +
-                        "reached the budget limit you have set for the \"$name\" category")
+                notification("You Have Reached The \"$categoryName\" Budget", "Please note that you have " +
+                        "reached the budget limit you have set for the \"$categoryName\" category")
             } else {
-                notification("Getting Close To \"$name\"'s Budget", "The amount you have spent on \"$name\"" +
+                notification("Getting Close To \"$categoryName\"'s Budget", "The amount you have spent on \"$categoryName\"" +
                         " is getting close to the budget limit.\nwatch your spending carefully")
             }
         }

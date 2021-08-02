@@ -93,10 +93,12 @@ class MainActivity : AppCompatActivity() {
             }
             for (i in 1..6) {
                 cat[i - 1].text = categories["c$i"]
-                if (categories["c$i"]!!.length > 6) {
-                    cat[i - 1].setTextSize(12.toFloat())
+                if (categories["c$i"]!!.length > 8) {
+                    cat[i - 1].textSize = 10.toFloat()
+                } else if (categories["c$i"]!!.length > 6) {
+                    cat[i - 1].textSize = 12.toFloat()
                 } else {
-                    cat[i - 1].setTextSize(14.toFloat())
+                    cat[i - 1].textSize = 14.toFloat()
                 }
             }
             // set budget
