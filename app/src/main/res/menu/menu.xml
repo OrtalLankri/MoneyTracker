@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:All4One="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/expanded_menu"
+    android:icon="@drawable/ic_baseline_menu_24"
+    android:title="nose"
+    All4One:showAsAction="always">
+    <menu>
+        <item android:id="@+id/settings"
+            android:icon="@drawable/ic_baseline_settings_24"
+            android:iconTint="@color/black"
+            android:title="Settings"/>
+        <item android:id="@+id/analysis"
+            android:icon="@drawable/ic_baseline_bar_chart_24"
+            android:title="Analysis" />
+        <item android:id="@+id/distribution"
+            android:icon="@drawable/ic_baseline_show_chart_24"
+            android:title="Distribution" />
+        <item android:id="@+id/logout"
+            android:icon="@drawable/ic_baseline_power_settings_new_24"
+            android:title="Log out" />
+    </menu>
+    </item>
+</menu>

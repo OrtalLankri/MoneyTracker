@@ -3,22 +3,23 @@ package com.example.moneytracker.ui.login
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Menu
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.moneytracker.MainActivity
-
 import com.example.moneytracker.R
 import com.example.moneytracker.SigninActivity
 import com.google.firebase.firestore.FirebaseFirestore
+import java.lang.reflect.Method
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -138,7 +139,6 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
-        // TODO : initiate successful logged in experience
         Toast.makeText(
                 applicationContext,
                 "$welcome $displayName",

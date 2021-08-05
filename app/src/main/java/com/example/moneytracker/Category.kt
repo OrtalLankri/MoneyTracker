@@ -1,15 +1,18 @@
 package com.example.moneytracker
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.example.moneytracker.ui.login.LoginActivity
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.getField
@@ -23,14 +26,18 @@ class Category: AppCompatActivity(){
 
     val CHANNEL_ID = "channel"
     var categoryName = "null"
+    lateinit var month : String
+    lateinit var userId : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
         CoroutineScope(Dispatchers.IO).launch {  }
 
-        val userId = intent.getStringExtra("userID").toString()
-        val month = intent.getStringExtra("month").toString()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        userId = intent.getStringExtra("userID").toString()
+        month = intent.getStringExtra("month").toString()
         val monthRef = FirebaseFirestore.getInstance().document("Users/$userId/Months/$month")
         var catName = intent.getStringExtra("name").toString()
         categoryName = catName
@@ -46,8 +53,6 @@ class Category: AppCompatActivity(){
         )
         val root = findViewById<View>(R.id.Category).rootView
         root.setBackgroundColor(Color.parseColor(colors[catNum]))
-
-        val back = findViewById<Button>(R.id.back)
         val addButton = findViewById<Button>(R.id.add)
         val categoryTitle = findViewById<TextView>(R.id.Category)
         val setBudget = findViewById<TextView>(R.id.setBudget)
@@ -57,14 +62,6 @@ class Category: AppCompatActivity(){
         val expenses = HashMap<String, String>()
 
         val layout = findViewById<LinearLayout>(R.id.layout)
-
-
-        back.setOnClickListener {
-            val i = Intent(this@Category, MainActivity::class.java)
-            i.putExtra("userID", userId)
-            i.putExtra("month", month)
-            startActivity(i)
-        }
 
         addButton.setOnClickListener {
             val i = Intent(this@Category, Expense::class.java)
@@ -221,18 +218,18 @@ class Category: AppCompatActivity(){
             percent = 0
         }
         pb.progress = percent
-        notify(percent)
+        if(intent.getStringExtra("notify").toString() == "true" && percent > 97) {
+            notify(percent)
+        }
     }
 
     private fun notify(percent: Int) {
-        if (percent > 97) {
-            if (percent >= 100) {
-                notification("You Have Reached The \"$categoryName\" Budget", "Please note that you have " +
-                        "reached the budget limit you have set for the \"$categoryName\" category")
-            } else {
-                notification("Getting Close To \"$categoryName\"'s Budget", "The amount you have spent on \"$categoryName\"" +
-                        " is getting close to the budget limit.\nwatch your spending carefully")
-            }
+        if (percent >= 100) {
+            notification("You Have Reached The \"$categoryName\" Budget", "Please note that you have " +
+                    "reached the budget limit you have set for the \"$categoryName\" category")
+        } else {
+            notification("Getting Close To \"$categoryName\"'s Budget", "The amount you have spent on \"$categoryName\"" +
+                    " is getting close to the budget limit.\nwatch your spending carefully")
         }
     }
 
@@ -248,6 +245,23 @@ class Category: AppCompatActivity(){
         val notificationManager = NotificationManagerCompat.from(this)
         notificationManager.notify(0, builder.build())
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        // back
+        16908332 -> {
+            val i = Intent(this@Category, MainActivity::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", month)
+            i.putExtra("notify", intent.getStringExtra("notify").toString())
+            startActivity(i)
+            finish()
+            true
+        }
+        else -> {
+            Log.d(TAG, item.itemId.toString())
+            super.onOptionsItemSelected(item)
+        }
     }
 
 }

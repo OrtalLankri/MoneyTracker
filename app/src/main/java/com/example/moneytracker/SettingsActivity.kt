@@ -7,10 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moneytracker.ui.login.afterTextChanged
 import com.google.firebase.firestore.FirebaseFirestore
@@ -35,6 +32,7 @@ class SettingsActivity : AppCompatActivity() {
         val changeDefault = findViewById<CheckBox>(R.id.checkBox)
         val budget =  findViewById<EditText>(R.id.budget)
         val confirm = findViewById<TextView>(R.id.confirmation)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         // categories names
         val catNames = arrayListOf<EditText>()
         catNames.add(findViewById<EditText>(R.id.cat1))
@@ -83,12 +81,17 @@ class SettingsActivity : AppCompatActivity() {
                 // budget
                 val monthBudget = documentReference.getField<Object>("budget")!!
                 budget.setText(monthBudget.toString())
+                nameChanged = false
+                budgetChanged = false
             }
         }
 
         save.setOnClickListener {
+            progressBar.visibility = View.VISIBLE
+            save.isEnabled = false
             // new Names
             if (nameChanged) {
+                Log.d(TAG, "Name changed")
                 val newNames = hashMapOf<String, String>()
                 for (i in 1..6) {
                     newNames.put("c$i", catNames[i-1].text.toString())
@@ -98,9 +101,9 @@ class SettingsActivity : AppCompatActivity() {
                         .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
                         .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
                 // update in user document
-                if (changeDefault.isActivated) {
+                if (changeDefault.isChecked) {
                     userRef.update("defaultCategories", newNames)
-                            .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
+                            .addOnSuccessListener { Log.d("TAG", "userDocumentSnapshot successfully updated!") }
                             .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
                 }
                 // update in category document
@@ -111,7 +114,6 @@ class SettingsActivity : AppCompatActivity() {
                             .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
                             .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
                 }
-
             }
             // new budgets
             if (budgetChanged) {
@@ -134,14 +136,16 @@ class SettingsActivity : AppCompatActivity() {
             }
             // update budget in month document
             monthRef.update("budget", budget.text.toString())
-                    .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully updated!") }
+                    .addOnSuccessListener {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!")
+                        // go back to main page
+                        val i = Intent(this@SettingsActivity, MainActivity::class.java)
+                        i.putExtra("userID", userId)
+                        i.putExtra("month", month)
+                        startActivity(i)
+                        finish()
+                    }
                     .addOnFailureListener { e -> Log.w(TAG, "Error updating budget in month document", e) }
-            // go back to main page
-            val i = Intent(this@SettingsActivity, MainActivity::class.java)
-            i.putExtra("userID", userId)
-            i.putExtra("month", month)
-            startActivity(i)
-            finish()
         }
 
         fun checkBudget() {
@@ -173,12 +177,6 @@ class SettingsActivity : AppCompatActivity() {
                     b += cat.text.toString().toDouble()
                 }
             }
-//            var cat = c1_b.text.toString().toDouble() +
-//                    c2_b.text.toString().toDouble() +
-//                    c3_b.text.toString().toDouble() +
-//                    c4_b.text.toString().toDouble() +
-//                    c5_b.text.toString().toDouble() +
-//                    c6_b.text.toString().toDouble()
             if (budget.text.toString() == "" || budget.text.toString().toDouble() < b ) {
                 budget.setText(b.toString())
             }
@@ -193,31 +191,6 @@ class SettingsActivity : AppCompatActivity() {
         for (cat in catBudgets){
             cat.afterTextChanged { budgetChanged() }
         }
-//        c1.afterTextChanged {
-//            nameChanged = true
-//        }
-//        c2.afterTextChanged {
-//            nameChanged = true
-//        }
-//        c3.afterTextChanged {
-//            nameChanged = true
-//        }
-//        c4.afterTextChanged {
-//            nameChanged = true
-//        }
-//        c5.afterTextChanged {
-//            nameChanged = true
-//        }
-//        c6.afterTextChanged {
-//            nameChanged = true
-//        }
-//        c1_b.afterTextChanged { budgetChanged() }
-//        c2_b.afterTextChanged { budgetChanged() }
-//        c3_b.afterTextChanged { budgetChanged() }
-//        c4_b.afterTextChanged { budgetChanged() }
-//        c5_b.afterTextChanged { budgetChanged() }
-//        c6_b.afterTextChanged { budgetChanged() }
-
     }
 
 }

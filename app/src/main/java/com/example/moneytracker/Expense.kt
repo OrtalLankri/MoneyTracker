@@ -1,6 +1,7 @@
 package com.example.moneytracker
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -50,7 +51,7 @@ class Expense: AppCompatActivity() {
         var dataChanged = false
         var isCategoryChosen = false
         var isCategoryFixed = category != "null"
-
+        lateinit var oldPrice : String
 
         val spinnerListener = object : OnItemSelectedListener {
             override fun onItemSelected(av: AdapterView<*>?, v: View, i: Int, l: Long) {
@@ -68,6 +69,7 @@ class Expense: AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         }
+
         // dropdown
         monthRef.get().addOnSuccessListener {
             val s = it.get("categories").toString().removePrefix("{").removeSuffix("}")
@@ -117,6 +119,8 @@ class Expense: AppCompatActivity() {
             price.setText(data["price"].toString())
             remark.setText(data["description"].toString())
             date.text = data["date"].toString()
+            dataChanged = false
+            oldPrice = data["price"].toString()
         }
 
         // if the information came from the scanned receipt
@@ -127,6 +131,7 @@ class Expense: AppCompatActivity() {
             if (dateArr.size >= 3) {
                 date.text = "${dateArr[0]} - ${dateArr[1]} - ${dateArr[2]}"
             }
+            dataChanged = false
         }
         // if expense already exist
         else if (expenseId != "null") {
@@ -196,7 +201,9 @@ class Expense: AppCompatActivity() {
                             left to right.toString()
                         }
                         for ((oldId, oldString) in map) {
-                            newMap.put(oldId, oldString)
+                            if (oldId != id) {
+                                newMap.put(oldId, oldString)
+                            }
                         }
                     }
                     updateMap(newMap)
@@ -210,6 +217,7 @@ class Expense: AppCompatActivity() {
             i.putExtra("month", month)
             i.putExtra("name", intent.getStringExtra("category").toString())
             i.putExtra("catNum", category)
+            i.putExtra("notify", "true")
             startActivity(i)
             finish()
         }
@@ -226,13 +234,15 @@ class Expense: AppCompatActivity() {
                         "title" to product_name.text.toString(),
                         "price" to price.text.toString()
                 )
+                // update "amount" in category and in month
                 updateAmount(expense["price"]!!.toDouble())
+                // add expense
                 catRef.collection("Expenses")
                     .add(expense)
                     .addOnSuccessListener { documentReference ->
                         Log.d(
                                 "TAG",
-                                "DocumentSnapshot written with ID-------------------------------------: ${documentReference.id}"
+                                "DocumentSnapshot written with ID----: ${documentReference.id}"
                         )
                         // add expense to category
                         val expenseString = expense["title"] + " - " + expense["price"] + "$"
@@ -250,6 +260,11 @@ class Expense: AppCompatActivity() {
             }
             // if it's not a new expense
             else if (dataChanged) {
+                // update in category
+                var newPrice = price.text.toString()
+                val expenseString = product_name.text.toString() + " - " + newPrice + "$"
+                addExpenseToCategory(expenseString, expenseId)
+                // update in expense collection
                 val expRef = catRef.collection("Expenses").document(expenseId)
                 expRef.update("date", date.text.toString())
                     .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
@@ -260,9 +275,8 @@ class Expense: AppCompatActivity() {
                 expRef.update("title", product_name.text.toString())
                     .addOnSuccessListener { Log.d("TAG", "DocumentSnapshot successfully updated!") }
                     .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }
-                var newPrice = price.text.toString()
                 expRef.get().addOnSuccessListener {
-                    var oldPrice = it.get("price").toString()
+                    // update "amount" in category and in month
                     if (oldPrice != newPrice) {
                         updateAmount(newPrice.toDouble() - oldPrice.toDouble())
                     }
@@ -270,8 +284,8 @@ class Expense: AppCompatActivity() {
                 expRef.update("price", newPrice)
                     .addOnSuccessListener {
                         Log.d("TAG", "DocumentSnapshot successfully updated!")
-                        showMessage("Saved Successfully!")
                         Thread.sleep(1000)
+                        showMessage("Saved Successfully!")
                         goBack()
                     }
                     .addOnFailureListener { e -> Log.w("TAG", "Error updating document", e) }

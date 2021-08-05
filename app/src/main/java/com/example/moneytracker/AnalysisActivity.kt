@@ -1,5 +1,6 @@
 package com.example.moneytracker
 
+import android.content.ContentValues
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -8,6 +9,7 @@ import android.graphics.ColorFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -19,14 +21,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AnalysisActivity : AppCompatActivity() {
+
+    lateinit var month : String
+    lateinit var userId : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_analysis)
         CoroutineScope(Dispatchers.IO).launch { }
-        val userId = intent.getStringExtra("userID").toString()
-        val month = intent.getStringExtra("month").toString()
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        userId = intent.getStringExtra("userID").toString()
+        month = intent.getStringExtra("month").toString()
+
         val title = findViewById<TextView>(R.id.month)
-        val back = findViewById<Button>(R.id.back)
         val prev = findViewById<ImageButton>(R.id.prev)
         val next = findViewById<ImageButton>(R.id.next)
         // categories names
@@ -55,10 +64,6 @@ class AnalysisActivity : AppCompatActivity() {
                 if (it.isSuccessful) {
                     val documentReference = it.result!!
                     if (documentReference.exists()) {
-                        Log.d("Analysis", "exist")
-                        val name = documentReference.getField<String>("name").toString()
-                        Log.d("Analysis", "name $name")
-                        title.text = name
                         // categories names
                         val c = documentReference.getField<Object>("categories")!!
                         var cString = c.toString().removePrefix("{").removeSuffix("}")
@@ -95,6 +100,10 @@ class AnalysisActivity : AppCompatActivity() {
                                 }
                             }
                         }
+                        // month name
+                        val name = documentReference.getField<String>("name").toString()
+                        Log.d("Analysis", "name $name")
+                        title.text = name
                     } else {
                         currentMonth = previousMonth
                         Log.d("Analysis", "not exist")
@@ -126,14 +135,6 @@ class AnalysisActivity : AppCompatActivity() {
             currentMonth = next(currentMonth)
             val monthRef = FirebaseFirestore.getInstance().document("Users/$userId/Months/$currentMonth")
             setMonthInfo(monthRef)
-        }
-
-        back.setOnClickListener {
-            val i = Intent(this@AnalysisActivity, MainActivity::class.java)
-            i.putExtra("userID", userId)
-            i.putExtra("month", month)
-            startActivity(i)
-            finish()
         }
     }
 
@@ -187,5 +188,21 @@ class AnalysisActivity : AppCompatActivity() {
 
     private fun showMessage(s: String) {
         Toast.makeText(applicationContext, s, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        // back
+        16908332 -> {
+            val i = Intent(this@AnalysisActivity, MainActivity::class.java)
+            i.putExtra("userID", userId)
+            i.putExtra("month", month)
+            startActivity(i)
+            finish()
+            true
+        }
+        else -> {
+            Log.d(ContentValues.TAG, item.itemId.toString())
+            super.onOptionsItemSelected(item)
+        }
     }
 }

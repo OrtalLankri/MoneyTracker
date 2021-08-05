@@ -7,10 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moneytracker.ui.login.LoginActivity
 import com.google.firebase.firestore.FirebaseFirestore
@@ -52,7 +49,7 @@ class SigninActivity : AppCompatActivity() {
                     "lastName" to lName.text.toString(),
                     "email" to email.text.toString(),
                     "password" to password1.text.toString().hashCode().toString(),
-                    "defaultCategories" to categories
+                    "defaultCategories" to categories,
             )
             db.collection("Users")
                     .add(user)
@@ -73,6 +70,8 @@ class SigninActivity : AppCompatActivity() {
         }
 
         button.setOnClickListener {
+            button.isEnabled = false
+            findViewById<ProgressBar>(R.id.spin).visibility = View.VISIBLE
             // check that user does not exist
             db.collection("Users")
                     .whereEqualTo("email", email.text.toString()).get()

@@ -1,6 +1,7 @@
 package com.example.moneytracker
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Bitmap
@@ -11,6 +12,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -34,16 +36,20 @@ private lateinit var bitmapImage : Bitmap
 @Suppress("DEPRECATION")
 class ScanActivity : AppCompatActivity() {
 
+    lateinit var month : String
+    lateinit var userId : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan)
         CoroutineScope(Dispatchers.IO).launch { }
 
-        val userId = intent.getStringExtra("userID").toString()
-        val month = intent.getStringExtra("month").toString()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        userId = intent.getStringExtra("userID").toString()
+        month = intent.getStringExtra("month").toString()
         val button = findViewById<Button>(R.id.button)
         val save  = findViewById<Button>(R.id.save)
-        val back = findViewById<Button>(R.id.back)
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val image = findViewById<ImageView>(R.id.image)
 
@@ -73,11 +79,21 @@ class ScanActivity : AppCompatActivity() {
             runTextRecognition()
         }
 
-        back.setOnClickListener {
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        // back
+        16908332 -> {
             val i = Intent(this@ScanActivity, MainActivity::class.java)
             i.putExtra("userID", userId)
             i.putExtra("month", month)
             startActivity(i)
+            finish()
+            true
+        }
+        else -> {
+            Log.d(ContentValues.TAG, item.itemId.toString())
+            super.onOptionsItemSelected(item)
         }
     }
 

@@ -10,24 +10,13 @@
         android:id="@+id/month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="64dp"
         android:text="Loading..."
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:text="Return"
-        android:drawableLeft="?attr/homeAsUpIndicator"
-        android:drawableTint="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/p_c1"
@@ -45,7 +34,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="240dp"
         android:layout_height="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="@+id/p_c1"
         app:layout_constraintTop_toBottomOf="@+id/p_c1" />
 
@@ -54,7 +43,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="240dp"
         android:layout_height="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="@+id/p_c1"
         app:layout_constraintStart_toStartOf="@+id/p_c2"
         app:layout_constraintTop_toBottomOf="@+id/p_c2" />
@@ -64,7 +53,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="240dp"
         android:layout_height="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="@+id/p_c3"
         app:layout_constraintStart_toStartOf="@+id/p_c3"
         app:layout_constraintTop_toBottomOf="@+id/p_c3" />
@@ -74,7 +63,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="240dp"
         android:layout_height="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="@+id/p_c4"
         app:layout_constraintStart_toStartOf="@+id/p_c4"
         app:layout_constraintTop_toBottomOf="@+id/p_c4" />
@@ -84,7 +73,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="240dp"
         android:layout_height="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="@+id/p_c5"
         app:layout_constraintStart_toStartOf="@+id/p_c5"
         app:layout_constraintTop_toBottomOf="@+id/p_c5" />
